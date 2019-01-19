@@ -7,7 +7,7 @@ public class Player : MonoBehaviour {
 
     [SerializeField] GameObject bullet;
 
-    private const float kickBack = 2F;
+    private const float kickBack = 10F;
 
     private bool pause;
 

@@ -138,8 +138,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324627615}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: -9, z: -1209.2927}
-  m_LocalScale: {x: 20.300001, y: 20.300001, z: 20.300001}
+  m_LocalPosition: {x: 2, y: -9, z: 0}
+  m_LocalScale: {x: 36.77967, y: 36.77967, z: 36.77967}
   m_Children:
   - {fileID: 2082883821}
   m_Father: {fileID: 1037658523}
@@ -194,7 +194,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4ac6eb027609b5844b957c655d24517d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -206,7 +206,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &684013625
+--- !u!1 &907233451
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,9 +214,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 684013628}
-  - component: {fileID: 684013627}
-  - component: {fileID: 684013626}
+  - component: {fileID: 907233454}
+  - component: {fileID: 907233453}
+  - component: {fileID: 907233452}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -224,21 +224,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &684013626
+--- !u!81 &907233452
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684013625}
+  m_GameObject: {fileID: 907233451}
   m_Enabled: 1
---- !u!20 &684013627
+--- !u!20 &907233453
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684013625}
+  m_GameObject: {fileID: 907233451}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -256,9 +256,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 90
+  field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 207.45656
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -274,15 +274,15 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &684013628
+--- !u!4 &907233454
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684013625}
+  m_GameObject: {fileID: 907233451}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 466, y: 200, z: -40.67388}
+  m_LocalPosition: {x: 469, y: 201, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -336,10 +336,10 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -356,7 +356,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 684013627}
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -376,7 +376,7 @@ RectTransform:
   m_GameObject: {fileID: 1037658519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 59.32612}
-  m_LocalScale: {x: 0.049261082, y: 0.049261082, z: 0.049261082}
+  m_LocalScale: {x: 0.4783547, y: 0.4783547, z: 0.4783547}
   m_Children:
   - {fileID: 324627616}
   - {fileID: 1054446250}
@@ -386,7 +386,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 466, y: 200}
-  m_SizeDelta: {x: 918.00006, y: 406}
+  m_SizeDelta: {x: 1920, y: 849.1503}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1054446249
 GameObject:
@@ -415,7 +415,7 @@ RectTransform:
   m_GameObject: {fileID: 1054446249}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 338.02304, y: 338.02304, z: 338.02304}
+  m_LocalScale: {x: 107.677704, y: 107.677704, z: 107.677704}
   m_Children: []
   m_Father: {fileID: 1037658523}
   m_RootOrder: 1
@@ -631,7 +631,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: b97358b2a1dd30b459881ac9040fe701, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
