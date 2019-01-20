@@ -10,8 +10,6 @@ public class Bullet : MonoBehaviour {
     private float yVel;
 
     void Start() {
-
-        
         //Movement
         transform.localScale = new Vector3(50F, 50F, 0);
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.1F, transform.position.z);

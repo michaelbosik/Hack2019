@@ -7,17 +7,22 @@ public class Player : MonoBehaviour {
 
     [SerializeField] GameObject bullet;
     [SerializeField] private HealthBar healthBar;
+    public AudioClip pewSound;
+    private AudioSource source;
 
     private const float kickBack = 10F;
 
     private bool pause;
-
     private Vector3 healthBarPos = new Vector3(0, 0, 0);
     private float angle;
     private bool lookRight;
     private float xVel;
     private float yVel;
     private float health;
+
+    void Awake() {
+        source = GetComponent<AudioSource>();
+    }
 
     void Start() {
         pause = false;
@@ -51,6 +56,7 @@ public class Player : MonoBehaviour {
                 xVel += kickBack * -1 * Mathf.Cos(angle);
                 yVel += kickBack * -1 * Mathf.Sin(angle);
                 Instantiate(bullet, transform.position, transform.GetChild(0).localRotation);
+                source.PlayOneShot(pewSound);
             }
 
             movePlayer();
