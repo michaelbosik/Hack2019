@@ -6,18 +6,27 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour {
 
     [SerializeField] GameObject bullet;
+    [SerializeField] private HealthBar healthBar;
 
     private const float kickBack = 10F;
 
     private bool pause;
 
+    private Vector3 healthBarPos = new Vector3(0, 0, 0);
     private float angle;
     private bool lookRight;
     private float xVel;
     private float yVel;
+    private float health;
 
     void Start() {
         pause = false;
+
+        //Health
+        Instantiate(healthBar, healthBarPos, transform.localRotation);
+        health = 1f;
+        healthBar.setSize(health);
+        healthBar.setColor(Color.green);
 
         angle = 0F;
         lookRight = true;
@@ -46,6 +55,26 @@ public class Player : MonoBehaviour {
 
             movePlayer();
         }
+
+        //HealthBar
+        /*Collisions
+        if (collides)
+            health -= .15f;
+        */
+        //health -= .001f;
+
+        if(health < 0f)
+            SceneManager.LoadScene(sceneName: "Menu");
+
+        healthBar.setColor(Color.green);
+
+        if (health < .75f)
+            healthBar.setColor(Color.yellow);
+        if (health < .25f)
+            healthBar.setColor(Color.red);
+
+        healthBar.setSize(health);
+
     }
 
     private void movePlayer() {
@@ -64,6 +93,10 @@ public class Player : MonoBehaviour {
         pos.x += Time.deltaTime * xVel;
         pos.y += Time.deltaTime * yVel;
         transform.position = pos;
+
+        //Change health pos
+        healthBarPos = new Vector3(transform.position.x, transform.position.y - 35, transform.position.z);
+        healthBar.transform.position = healthBarPos;
 
         if (lookRight) {
             transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, angle * 180 / Mathf.PI);
