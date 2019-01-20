@@ -5,34 +5,32 @@ using UnityEngine;
 public class Gloup : MonoBehaviour
 {
 
-    float speed = 20;
+    float speed = 50F;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Start() {
+        transform.localScale = new Vector3(50F, 50F, 0);
     }
 
-    // Update is called once per frame
     void Update() {
         GameObject player = GameObject.Find("Astronaut");
 
-        Vector3 position = player.transform.position - this.transform.position;
-        position.Normalize();
-        Debug.Log("Gloup Position:" + position);
+        float x = player.transform.position.x - transform.position.x;
+        float y = player.transform.position.y - transform.position.y;
+        Debug.Log("X: " + x);
+        Debug.Log("Y:" + y);
+        float angle = Mathf.Atan2(y, x);
+        float xVel = speed * Mathf.Cos(angle);
+        float yVel = speed * Mathf.Sin(angle);
+        Vector3 pos = transform.position;
+        pos.x += Time.deltaTime * xVel;
+        pos.y += Time.deltaTime * yVel;
+        transform.position = pos;
+    }
 
-
-        position *= speed * Time.deltaTime;
-
-        this.transform.position += position;
-    
-
-        Debug.Log("Gloup:" + this.transform.position + " " + Time.deltaTime);
-
-        /*Vector3 vectorToTarget = player.transform.position - transform.position;
-        float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
-        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * dir);
-        Debug.Log("playerCoords: " + player.transform.position);*/
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.name != "GG(Clone)") {
+            Game.numLeft--;
+            Destroy(gameObject);
+        }
     }
 }

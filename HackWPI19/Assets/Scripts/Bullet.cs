@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
     void Start() {
         //Movement
         transform.localScale = new Vector3(50F, 50F, 0);
+        transform.position = new Vector3(transform.position.x, transform.position.y + 0.1F, transform.position.z);
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         float x = Input.mousePosition.x - screenPos.x;
@@ -39,8 +40,9 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter()
-    {
-        Destroy(gameObject);
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.name != "Astronaut") {
+            Destroy(gameObject);
+        }
     }
 }
