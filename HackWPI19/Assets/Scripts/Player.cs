@@ -56,13 +56,6 @@ public class Player : MonoBehaviour {
             movePlayer();
         }
 
-        //HealthBar
-        /*Collisions
-        if (collides)
-            health -= .15f;
-        */
-        //health -= .001f;
-
         if(health < 0f)
             SceneManager.LoadScene(sceneName: "Menu");
 
@@ -75,6 +68,12 @@ public class Player : MonoBehaviour {
 
         healthBar.setSize(health);
 
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "GG(Clone)")
+            health -= .1f;
     }
 
     private void movePlayer() {
@@ -95,7 +94,7 @@ public class Player : MonoBehaviour {
         transform.position = pos;
 
         //Change health pos
-        healthBarPos = new Vector3(transform.position.x, transform.position.y - 35, transform.position.z);
+        healthBarPos = new Vector3(transform.position.x, transform.position.y - 18, transform.position.z);
         healthBar.transform.position = healthBarPos;
 
         if (lookRight) {
