@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
-{
+public class Bullet : MonoBehaviour {
 
     private const float speed = 500F;
 
@@ -11,6 +10,8 @@ public class Bullet : MonoBehaviour
     private float yVel;
 
     void Start() {
+
+        
         //Movement
         transform.localScale = new Vector3(50F, 50F, 0);
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.1F, transform.position.z);
