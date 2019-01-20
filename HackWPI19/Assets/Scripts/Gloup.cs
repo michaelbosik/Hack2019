@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class Gloup : MonoBehaviour
 {
+    [SerializeField] GUIText scoreText;
 
-    float speed = 50F;
+    private const float speed = 50F;
+    public int score;
+    //public GUIText scoreText;
 
     void Start() {
         transform.localScale = new Vector3(50F, 50F, 0);
+        scoreText = GameObject.FindGameObjectWithTag("ScoreText").GetComponent<GUIText>();
+        score = 0;
     }
 
     void Update() {
@@ -30,6 +35,10 @@ public class Gloup : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.name != "GG(Clone)") {
             Game.numLeft--;
+            if (collision.gameObject.name == "Bullet(Clone)")
+            {
+                scoreText.text = " Score: " + ++score;
+            }
             Destroy(gameObject);
         }
     }

@@ -169,7 +169,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a0019b8fa16b40d4e91e069a88ddd3ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 69ec59b87db7ade479e1d67c0b2a266a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -972,8 +972,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000030518, y: 110.4}
-  m_SizeDelta: {x: 568.1, y: 79}
+  m_AnchoredPosition: {x: -0.0001955, y: 99.425}
+  m_SizeDelta: {x: 609.9, y: 100.95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1887297737
 MonoBehaviour:
@@ -996,19 +996,19 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: 6acc99e96fc44c049bcf7aaab930736d, type: 3}
+    m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 50
+    m_MaxSize: 100
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Alone Astronaut
+  m_Text: Alone
 --- !u!222 &1887297738
 CanvasRenderer:
   m_ObjectHideFlags: 0
