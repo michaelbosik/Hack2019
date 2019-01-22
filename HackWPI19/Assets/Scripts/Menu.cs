@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour {
 
     public void StartGame() {
-        SceneManager.LoadScene(sceneName: "Space");
+        SceneManager.LoadScene("Space");
     }
 
     public void Quit() {

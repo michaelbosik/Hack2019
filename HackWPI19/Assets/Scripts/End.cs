@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Score : MonoBehaviour {
+public class End : MonoBehaviour {
 
     public GameObject txtScore;
 
     void Start() {
-        
-    }
-
-    void Update() {
-        txtScore.GetComponent<UnityEngine.UI.Text>().text = " Score: " + Game.score;
+        int score = Game.score;
+        txtScore.GetComponent<Text>().text = "Score: " + score;
     }
 }

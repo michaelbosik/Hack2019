@@ -41,21 +41,17 @@ public class Player : MonoBehaviour {
 
     void Update() {
         // Angle of mouse
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.GetChild(0).position);
         float x = Input.mousePosition.x - screenPos.x;
         float y = Input.mousePosition.y - screenPos.y;
         angle = Mathf.Atan2(y, x);
-
-        if (Input.GetKey(KeyCode.Escape)) {
-            //pause = !pause;
-        }
 
         if (!pause) {
             // Left click
             if (Input.GetMouseButtonDown(0)) {
                 xVel += kickBack * -1 * Mathf.Cos(angle);
                 yVel += kickBack * -1 * Mathf.Sin(angle);
-                Instantiate(bullet, transform.position, transform.GetChild(0).localRotation);
+                Instantiate(bullet, transform.GetChild(0).GetChild(0).position, transform.GetChild(0).localRotation);
                 source.PlayOneShot(pewSound);
             }
 
@@ -63,7 +59,7 @@ public class Player : MonoBehaviour {
         }
 
         if(health < 0f)
-            SceneManager.LoadScene(sceneName: "Menu");
+            SceneManager.LoadScene("End");
 
         healthBar.setColor(Color.green);
 
@@ -83,16 +79,23 @@ public class Player : MonoBehaviour {
     }
 
     private void movePlayer() {
-        if ((angle > -1 * Mathf.PI / 2) && (angle <= Mathf.PI / 2)) {
-            if (!lookRight) {
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
-                lookRight = true;
+        float astroAngle;
+        if ((angle >= -1 * Mathf.PI / 2) && (angle <= Mathf.PI / 2)) { // right
+            lookRight = true;
+            if (angle >= 0) { // [0, pi/2]
+                astroAngle = angle * 180 / Mathf.PI / 2;
+            } else { // [-pi/2, 0)
+                astroAngle = 360 + angle * 180 / Mathf.PI / 2;
             }
-        } else {
-            if (lookRight) {
-                transform.localRotation = Quaternion.Euler(0, 180, 0);
-                lookRight = false;
+            transform.localRotation = Quaternion.Euler(0, 0, astroAngle);
+        } else { // left
+            lookRight = false;
+            if (angle > 0) { // (pi/2, pi] 
+                astroAngle = 90 - angle * 180 / Mathf.PI / 2;
+            } else { // [-pi, -pi/2)
+                astroAngle = -1 * (angle * 180 / Mathf.PI + 180) / 2;
             }
+            transform.localRotation = Quaternion.Euler(0, 180, astroAngle);
         }
         Vector3 pos = transform.position;
         pos.x += Time.deltaTime * xVel;
@@ -104,14 +107,14 @@ public class Player : MonoBehaviour {
         healthBar.transform.position = healthBarPos;
 
         if (lookRight) {
-            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, angle * 180 / Mathf.PI);
+            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, angle * 180 / Mathf.PI - astroAngle);
         } else {
-            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, -1 * (angle * 180 / Mathf.PI) + 180);
+            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, -1 * (angle * 180 / Mathf.PI) + 180  -astroAngle);
         }
     }
 
     void OnBecameInvisible()
     {
-        SceneManager.LoadScene(sceneName: "Menu");
+        SceneManager.LoadScene("End");
     }
 }

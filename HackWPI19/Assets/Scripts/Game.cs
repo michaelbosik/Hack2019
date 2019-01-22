@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
     public AudioClip soundByte;
     [SerializeField] GameObject gg_0;
     private static AudioSource source;
+    public GameObject txtScore;
+    public GameObject txtWave;
+    public GameObject txtLeft;
 
     private const int rate = 3;
     private const int init = 5;
@@ -21,8 +25,8 @@ public class Game : MonoBehaviour {
 
     private float time;
     private int lvl;
-    public static int numLeft;
     public static int score;
+    private List<GameObject> lstGloup;
 
     void Awake() {
         source = GetComponent<AudioSource>();
@@ -32,21 +36,30 @@ public class Game : MonoBehaviour {
         // Initialize variables
         time = 0F;
         lvl = 0;
-        numLeft = 0;
         score = 0;
+        lstGloup = new List<GameObject>();
     }
 
     void Update() {
+        // Noise
         System.Random rnNoise = new System.Random();
         int noise = rnNoise.Next(0, noiseOdds);
         if (noise == 0) {
             source.PlayOneShot(soundByte);
         }
+
+        // HUD text
+        txtScore.GetComponent<Text>().text = "Score: " + score;
+        txtWave.GetComponent<Text>().text = "Wave: " + lvl;
+        txtLeft.GetComponent<Text>().text = "Gloups Left: " + lstGloup.Count;
+
         // Quit
         if (Input.GetKey(KeyCode.Escape)) {
-            Application.Quit();
+            SceneManager.LoadScene("End");
         }
-        if (numLeft == 0) {
+
+        // Spawn Gloups
+        if (lstGloup.Count == 0) {
             int numG = rate * lvl + init;
             System.Random rndm = new System.Random();
             for (int i = 0; i < numG; i++) {
@@ -58,7 +71,7 @@ public class Game : MonoBehaviour {
                         y = rndm.Next(up, up + buffer);
                         break;
                     case 1: // Right
-                        x = rndm.Next(right + buffer);
+                        x = rndm.Next(right, right + buffer);
                         y = rndm.Next(down, up);
                         break;
                     case 2: // Down
@@ -71,10 +84,18 @@ public class Game : MonoBehaviour {
                         break;
                 }
                 Vector3 pos = new Vector3(x, y, zBuff);
-                Instantiate(gg_0, pos, Quaternion.identity);
-                numLeft++;
+                Debug.Log("Spawn " +  coin + ": (" + x + ", " + y + ")");
+                GameObject newGloup = Instantiate(gg_0, pos, Quaternion.identity);
+                lstGloup.Add(newGloup);
             }
             lvl++;
+        }
+
+        // Remove dead gloups
+        for (int i = 0; i < lstGloup.Count; i++) {
+            if (lstGloup[i] == null) {
+                lstGloup.RemoveAt(i);
+            }
         }
     }
 }

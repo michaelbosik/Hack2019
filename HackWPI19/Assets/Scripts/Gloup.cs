@@ -27,7 +27,6 @@ public class Gloup : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.name != "GG(Clone)") {
-            Game.numLeft--;
             if (collision.gameObject.name == "Bullet(Clone)") {
                 Game.score++;
             }
