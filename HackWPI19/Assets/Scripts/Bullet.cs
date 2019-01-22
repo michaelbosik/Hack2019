@@ -5,14 +5,13 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     private const float speed = 500F;
+    private const float bulletSize = 25F;
 
     private float xVel;
     private float yVel;
 
     void Start() {
-        //Movement
-        transform.localScale = new Vector3(50F, 50F, 0);
-        //transform.position = new Vector3(transform.position.x, transform.position.y + 0.1F, transform.position.z);
+        transform.localScale = new Vector3(bulletSize, bulletSize, 0);
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         float x = Input.mousePosition.x - screenPos.x;
@@ -25,13 +24,11 @@ public class Bullet : MonoBehaviour {
     }
 
     void Update() {
-
         //Movement
         Vector3 pos = transform.position;
         pos.x += Time.deltaTime * xVel;
         pos.y += Time.deltaTime * yVel;
         transform.position = pos;
-
     }
 
     void OnBecameInvisible()

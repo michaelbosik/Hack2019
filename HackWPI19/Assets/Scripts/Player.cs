@@ -10,11 +10,12 @@ public class Player : MonoBehaviour {
     public AudioClip pewSound;
     private AudioSource source;
 
-    private const float kickBack = 10F;
+    private const float kickBack = 4F;
 
     private bool pause;
     private Vector3 healthBarPos = new Vector3(0, 0, 0);
-    private float angle;
+    private float mouseAngle;
+    private float astroAngle;
     private bool lookRight;
     private float xVel;
     private float yVel;
@@ -33,7 +34,8 @@ public class Player : MonoBehaviour {
         healthBar.setSize(health);
         healthBar.setColor(Color.green);
 
-        angle = 0F;
+        mouseAngle = 0F;
+        astroAngle = 0F;
         lookRight = true;
         xVel = 0F;
         yVel = 0F;
@@ -44,14 +46,14 @@ public class Player : MonoBehaviour {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.GetChild(0).position);
         float x = Input.mousePosition.x - screenPos.x;
         float y = Input.mousePosition.y - screenPos.y;
-        angle = Mathf.Atan2(y, x);
+        mouseAngle = Mathf.Atan2(y, x);
 
         if (!pause) {
             // Left click
             if (Input.GetMouseButtonDown(0)) {
-                xVel += kickBack * -1 * Mathf.Cos(angle);
-                yVel += kickBack * -1 * Mathf.Sin(angle);
-                Instantiate(bullet, transform.GetChild(0).GetChild(0).position, transform.GetChild(0).localRotation);
+                xVel += kickBack * -1 * Mathf.Cos(mouseAngle);
+                yVel += kickBack * -1 * Mathf.Sin(mouseAngle);
+                Instantiate(bullet, transform.GetChild(0).GetChild(0).position, Quaternion.Euler(0, 0, transform.GetChild(0).localRotation.z + astroAngle));
                 source.PlayOneShot(pewSound);
             }
 
@@ -79,21 +81,20 @@ public class Player : MonoBehaviour {
     }
 
     private void movePlayer() {
-        float astroAngle;
-        if ((angle >= -1 * Mathf.PI / 2) && (angle <= Mathf.PI / 2)) { // right
+        if ((mouseAngle >= -1 * Mathf.PI / 2) && (mouseAngle <= Mathf.PI / 2)) { // right
             lookRight = true;
-            if (angle >= 0) { // [0, pi/2]
-                astroAngle = angle * 180 / Mathf.PI / 2;
+            if (mouseAngle >= 0) { // [0, pi/2]
+                astroAngle = mouseAngle * 180 / Mathf.PI / 2;
             } else { // [-pi/2, 0)
-                astroAngle = 360 + angle * 180 / Mathf.PI / 2;
+                astroAngle = 360 + mouseAngle * 180 / Mathf.PI / 2;
             }
             transform.localRotation = Quaternion.Euler(0, 0, astroAngle);
         } else { // left
             lookRight = false;
-            if (angle > 0) { // (pi/2, pi] 
-                astroAngle = 90 - angle * 180 / Mathf.PI / 2;
+            if (mouseAngle > 0) { // (pi/2, pi] 
+                astroAngle = 90 - mouseAngle * 180 / Mathf.PI / 2;
             } else { // [-pi, -pi/2)
-                astroAngle = -1 * (angle * 180 / Mathf.PI + 180) / 2;
+                astroAngle = -1 * (mouseAngle * 180 / Mathf.PI + 180) / 2;
             }
             transform.localRotation = Quaternion.Euler(0, 180, astroAngle);
         }
@@ -107,9 +108,9 @@ public class Player : MonoBehaviour {
         healthBar.transform.position = healthBarPos;
 
         if (lookRight) {
-            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, angle * 180 / Mathf.PI - astroAngle);
+            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, mouseAngle * 180 / Mathf.PI - astroAngle);
         } else {
-            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, -1 * (angle * 180 / Mathf.PI) + 180  -astroAngle);
+            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, -1 * (mouseAngle * 180 / Mathf.PI) + 180 - astroAngle);
         }
     }
 

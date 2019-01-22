@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class Gloup : MonoBehaviour {
 
-    private const float speed = 50F;
+    private const float gloupSpeed = 40F;
+    private const float gloupSpeedDev = 5F;
+    private const float gloupSize = 50F;
+    private const float gloupSizeDev = 15F;
+
+    private float rndmSpeed;
 
     void Start() {
-        transform.localScale = new Vector3(50F, 50F, 0);
+        // Create gloup with random size
+        float rndmSize = Random.Range(gloupSize - gloupSizeDev, gloupSize + gloupSizeDev);
+        Debug.Log("Gloup size: " + rndmSize);
+        transform.localScale = new Vector3(rndmSize, rndmSize, 0);
+
+        rndmSpeed = Random.Range(gloupSpeed - gloupSpeedDev, gloupSpeed + gloupSpeedDev);
     }
 
     void Update() {
@@ -16,8 +26,8 @@ public class Gloup : MonoBehaviour {
         float x = player.transform.position.x - transform.position.x;
         float y = player.transform.position.y - transform.position.y;
         float angle = Mathf.Atan2(y, x);
-        float xVel = speed * Mathf.Cos(angle);
-        float yVel = speed * Mathf.Sin(angle);
+        float xVel = rndmSpeed * Mathf.Cos(angle);
+        float yVel = rndmSpeed * Mathf.Sin(angle);
         Vector3 pos = transform.position;
         pos.x += Time.deltaTime * xVel;
         pos.y += Time.deltaTime * yVel;
