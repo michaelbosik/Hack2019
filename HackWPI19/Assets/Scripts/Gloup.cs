@@ -14,7 +14,6 @@ public class Gloup : MonoBehaviour {
     void Start() {
         // Create gloup with random size
         float rndmSize = Random.Range(gloupSize - gloupSizeDev, gloupSize + gloupSizeDev);
-        Debug.Log("Gloup size: " + rndmSize);
         transform.localScale = new Vector3(rndmSize, rndmSize, 0);
 
         // Create random speed for gloup

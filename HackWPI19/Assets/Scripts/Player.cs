@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
     public AudioClip pewSound;
     private AudioSource source;
 
-    private const float kickBack = 4F;
+    private const float kickBack = 10F;
     private const float totalHealth = 1f;
     private const float damage = 0.1f;
 
@@ -22,6 +22,10 @@ public class Player : MonoBehaviour {
     private float yVel;
     private float health;
     private HealthBar healthBar;
+    private float right;
+    private float left;
+    private float up;
+    private float down;
 
     void Awake() {
         source = GetComponent<AudioSource>();
@@ -41,6 +45,13 @@ public class Player : MonoBehaviour {
         lookRight = true;
         xVel = 0F;
         yVel = 0F;
+
+        // Screen size
+        Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        right = screenSize.x;
+        left = 0;
+        up = screenSize.y;
+        down = 0;
     }
 
     void Update() {
@@ -80,6 +91,7 @@ public class Player : MonoBehaviour {
     }
 
     private void movePlayer() {
+        checkBounce();
         if ((mouseAngle >= -1 * Mathf.PI / 2) && (mouseAngle <= Mathf.PI / 2)) { // right
             lookRight = true;
             if (mouseAngle >= 0) { // [0, pi/2]
@@ -101,6 +113,9 @@ public class Player : MonoBehaviour {
         pos.x += Time.deltaTime * xVel;
         pos.y += Time.deltaTime * yVel;
         transform.position = pos;
+        Debug.Log("Position: " + pos);
+        Debug.Log("xVel: " + xVel);
+        Debug.Log("yVel: " + yVel);
 
         //Change health pos
         healthBarPos = new Vector3(transform.position.x, transform.position.y - 18, transform.position.z);
@@ -113,7 +128,25 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnBecameInvisible() {
-        SceneManager.LoadScene("End");
+    private void checkBounce() {
+        Vector3 astroPos = transform.position;
+        if ((astroPos.x < left) || (astroPos.x > right)) {
+            if (astroPos.x < left) {
+                transform.position = new Vector3(left, transform.position.y, transform.position.z);
+            } else {
+                transform.position = new Vector3(right, transform.position.y, transform.position.z);
+            }
+            xVel *= -0.5F;
+            health -= damage;
+        }
+        if ((astroPos.y < down) || (astroPos.y > up)) {
+            if (astroPos.y < down) {
+                transform.position = new Vector3(transform.position.x, down, transform.position.z);
+            } else {
+                transform.position = new Vector3(transform.position.x, up, transform.position.z);
+            }
+            yVel *= -0.5F;
+            health -= damage;
+        }
     }
 }

@@ -14,17 +14,17 @@ public class Game : MonoBehaviour {
 
     private const int rate = 3;
     private const int init = 5;
-    private const int right = 1000;
-    private const int left = 0;
-    private const int up = 500;
-    private const int down = 0;
-    private const int buffer = 250;
-    private const int zBuff = 10;
+    private const float buffer = 250F;
+    private const float zBuff = 10F;
 
     private static AudioSource source;
     private int wave;
     public static int score;
     private List<GameObject> lstGloup;
+    private float right;
+    private float left;
+    private float up;
+    private float down;
 
     void Awake() {
         source = GetComponent<AudioSource>();
@@ -35,6 +35,11 @@ public class Game : MonoBehaviour {
         wave = 0;
         score = 0;
         lstGloup = new List<GameObject>();
+        Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        right = screenSize.x;
+        left = 0;
+        up = screenSize.y;
+        down = 0;
     }
 
     void Update() {
@@ -51,30 +56,28 @@ public class Game : MonoBehaviour {
         // Spawn Gloups
         if (lstGloup.Count == 0) {
             int numG = rate * wave + init;
-            System.Random rndm = new System.Random();
             for (int i = 0; i < numG; i++) {
-                int x, y;
-                int coin = rndm.Next(0, 4);
+                float x, y;
+                int coin = Random.Range(0, 3);
                 switch (coin) {
                     case 0: // Up
-                        x = rndm.Next(left, right);
-                        y = rndm.Next(up, up + buffer);
+                        x = Random.Range(left, right);
+                        y = Random.Range(up, up + buffer);
                         break;
                     case 1: // Right
-                        x = rndm.Next(right, right + buffer);
-                        y = rndm.Next(down, up);
+                        x = Random.Range(right, right + buffer);
+                        y = Random.Range(down, up);
                         break;
                     case 2: // Down
-                        x = rndm.Next(left, right);
-                        y = rndm.Next(down - buffer, down);
+                        x = Random.Range(left, right);
+                        y = Random.Range(down - buffer, down);
                         break;
                     default: // Left
-                        x = rndm.Next(left - buffer, left);
-                        y = rndm.Next(down, up);
+                        x = Random.Range(left - buffer, left);
+                        y = Random.Range(down, up);
                         break;
                 }
                 Vector3 pos = new Vector3(x, y, zBuff);
-                Debug.Log("Spawn " +  coin + ": (" + x + ", " + y + ")");
                 GameObject newGloup = Instantiate(gg_0, pos, Quaternion.identity);
                 lstGloup.Add(newGloup);
             }
