@@ -2,23 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthBar : MonoBehaviour
-{
-    private Transform bar;
+public class HealthBar : MonoBehaviour {
 
-    // Start is called before the first frame update
-    public void Start()
-    {
-        bar = transform.Find("Bar");
+    private const float barSize = 0.75f;
+
+    public void setSize(float sizeNormalized) {
+        transform.localScale = new Vector3(sizeNormalized, barSize, barSize);
     }
 
-    public void setSize(float sizeNormalized)
-    {
-        bar.localScale = new Vector3(sizeNormalized, 1f, 1f);
-    }
-
-    public void setColor(Color color)
-    {
-        bar.Find("BarSprite").GetComponent<SpriteRenderer>().color = color;
+    public void setColor(Color color) {
+        transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = color;
     }
 }

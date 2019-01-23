@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Gloup : MonoBehaviour {
 
-    private const float gloupSpeed = 40F;
-    private const float gloupSpeedDev = 5F;
+    private const float gloupSpeed = 45F;
+    private const float gloupSpeedDev = 10F;
     private const float gloupSize = 50F;
-    private const float gloupSizeDev = 15F;
+    private const float gloupSizeDev = 10F;
 
     private float rndmSpeed;
 
@@ -17,10 +17,12 @@ public class Gloup : MonoBehaviour {
         Debug.Log("Gloup size: " + rndmSize);
         transform.localScale = new Vector3(rndmSize, rndmSize, 0);
 
+        // Create random speed for gloup
         rndmSpeed = Random.Range(gloupSpeed - gloupSpeedDev, gloupSpeed + gloupSpeedDev);
     }
 
     void Update() {
+        // Tracks player
         GameObject player = GameObject.Find("Astronaut");
 
         float x = player.transform.position.x - transform.position.x;
@@ -29,6 +31,7 @@ public class Gloup : MonoBehaviour {
         float xVel = rndmSpeed * Mathf.Cos(angle);
         float yVel = rndmSpeed * Mathf.Sin(angle);
         Vector3 pos = transform.position;
+
         pos.x += Time.deltaTime * xVel;
         pos.y += Time.deltaTime * yVel;
         transform.position = pos;
@@ -36,7 +39,9 @@ public class Gloup : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
+        // If collides with a bullet or the player, die
         if (collision.gameObject.name != "GG(Clone)") {
+            // If collides with bullet, increase score
             if (collision.gameObject.name == "Bullet(Clone)") {
                 Game.score++;
             }

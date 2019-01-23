@@ -5,35 +5,37 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
-    [SerializeField] GameObject bullet;
-    [SerializeField] private HealthBar healthBar;
+    public GameObject bullet;
+    public HealthBar serialBar;
     public AudioClip pewSound;
     private AudioSource source;
 
     private const float kickBack = 4F;
+    private const float totalHealth = 1f;
+    private const float damage = 0.1f;
 
-    private bool pause;
-    private Vector3 healthBarPos = new Vector3(0, 0, 0);
+    private Vector3 healthBarPos;
     private float mouseAngle;
     private float astroAngle;
     private bool lookRight;
     private float xVel;
     private float yVel;
     private float health;
+    private HealthBar healthBar;
 
     void Awake() {
         source = GetComponent<AudioSource>();
     }
 
     void Start() {
-        pause = false;
-
         //Health
-        Instantiate(healthBar, healthBarPos, transform.localRotation);
-        health = 1f;
+        healthBarPos = new Vector3(0, 0, 0);
+        healthBar = Instantiate(serialBar, healthBarPos, transform.localRotation);
+        health = totalHealth;
         healthBar.setSize(health);
         healthBar.setColor(Color.green);
 
+        // Initialize variables
         mouseAngle = 0F;
         astroAngle = 0F;
         lookRight = true;
@@ -48,36 +50,33 @@ public class Player : MonoBehaviour {
         float y = Input.mousePosition.y - screenPos.y;
         mouseAngle = Mathf.Atan2(y, x);
 
-        if (!pause) {
-            // Left click
-            if (Input.GetMouseButtonDown(0)) {
-                xVel += kickBack * -1 * Mathf.Cos(mouseAngle);
-                yVel += kickBack * -1 * Mathf.Sin(mouseAngle);
-                Instantiate(bullet, transform.GetChild(0).GetChild(0).position, Quaternion.Euler(0, 0, transform.GetChild(0).localRotation.z + astroAngle));
-                source.PlayOneShot(pewSound);
-            }
-
-            movePlayer();
+        // Left click - Fire
+        if (Input.GetMouseButtonDown(0)) {
+            xVel += kickBack * -1 * Mathf.Cos(mouseAngle);
+            yVel += kickBack * -1 * Mathf.Sin(mouseAngle);
+            Instantiate(bullet, transform.GetChild(0).GetChild(0).position, Quaternion.Euler(0, 0, transform.GetChild(0).localRotation.z + astroAngle));
+            source.PlayOneShot(pewSound);
         }
 
-        if(health < 0f)
-            SceneManager.LoadScene("End");
+        // Player movement
+        movePlayer();
 
-        healthBar.setColor(Color.green);
-
-        if (health < .75f)
+        // Health bar
+        if (health > (0.75) * totalHealth) {
+            healthBar.setColor(Color.green);
+        } else if (health > (0.5) * totalHealth) {
             healthBar.setColor(Color.yellow);
-        if (health < .25f)
+        } else if (health > 0) {
             healthBar.setColor(Color.red);
-
+        } else {
+            SceneManager.LoadScene("End");
+        }
         healthBar.setSize(health);
-
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
+    void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.name == "GG(Clone)")
-            health -= .1f;
+            health -= damage;
     }
 
     private void movePlayer() {
@@ -114,8 +113,7 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnBecameInvisible()
-    {
+    void OnBecameInvisible() {
         SceneManager.LoadScene("End");
     }
 }

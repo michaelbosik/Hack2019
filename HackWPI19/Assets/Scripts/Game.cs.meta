@@ -3,7 +3,12 @@ guid: d5515cb006cacfa44adaf66d79a39cb6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gg_0: {instanceID: 0}
+  - soundByte: {instanceID: 0}
+  - txtScore: {instanceID: 0}
+  - txtWave: {instanceID: 0}
+  - txtLeft: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

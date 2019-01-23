@@ -6,16 +6,14 @@ using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
+    public GameObject gg_0;
     public AudioClip soundByte;
-    [SerializeField] GameObject gg_0;
-    private static AudioSource source;
     public GameObject txtScore;
     public GameObject txtWave;
     public GameObject txtLeft;
 
     private const int rate = 3;
     private const int init = 5;
-    private const int noiseOdds = 100;
     private const int right = 1000;
     private const int left = 0;
     private const int up = 500;
@@ -23,8 +21,8 @@ public class Game : MonoBehaviour {
     private const int buffer = 250;
     private const int zBuff = 10;
 
-    private float time;
-    private int lvl;
+    private static AudioSource source;
+    private int wave;
     public static int score;
     private List<GameObject> lstGloup;
 
@@ -34,23 +32,15 @@ public class Game : MonoBehaviour {
 
     void Start() {
         // Initialize variables
-        time = 0F;
-        lvl = 0;
+        wave = 0;
         score = 0;
         lstGloup = new List<GameObject>();
     }
 
     void Update() {
-        // Noise
-        System.Random rnNoise = new System.Random();
-        int noise = rnNoise.Next(0, noiseOdds);
-        if (noise == 0) {
-            source.PlayOneShot(soundByte);
-        }
-
         // HUD text
         txtScore.GetComponent<Text>().text = "Score: " + score;
-        txtWave.GetComponent<Text>().text = "Wave: " + lvl;
+        txtWave.GetComponent<Text>().text = "Wave: " + wave;
         txtLeft.GetComponent<Text>().text = "Gloups Left: " + lstGloup.Count;
 
         // Quit
@@ -60,7 +50,7 @@ public class Game : MonoBehaviour {
 
         // Spawn Gloups
         if (lstGloup.Count == 0) {
-            int numG = rate * lvl + init;
+            int numG = rate * wave + init;
             System.Random rndm = new System.Random();
             for (int i = 0; i < numG; i++) {
                 int x, y;
@@ -88,13 +78,14 @@ public class Game : MonoBehaviour {
                 GameObject newGloup = Instantiate(gg_0, pos, Quaternion.identity);
                 lstGloup.Add(newGloup);
             }
-            lvl++;
+            wave++;
         }
 
         // Remove dead gloups
         for (int i = 0; i < lstGloup.Count; i++) {
             if (lstGloup[i] == null) {
                 lstGloup.RemoveAt(i);
+                source.PlayOneShot(soundByte);
             }
         }
     }

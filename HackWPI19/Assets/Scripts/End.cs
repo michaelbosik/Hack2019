@@ -25,7 +25,7 @@ public class End : MonoBehaviour {
                 strScore = sr.ReadLine();
                 highScore = Int32.Parse(strScore);
             }
-        } catch (Exception e) {
+        } catch (Exception) {
             highScore = 0;
         }
 
