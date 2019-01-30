@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f0c70ae57f26547af94c49170df366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 7253841665523882198, guid: 422488b0ecc7cb344a7716e7462f2412, type: 3}
+  bullet: {fileID: 4661011878515079592, guid: 422488b0ecc7cb344a7716e7462f2412, type: 3}
   serialBar: {fileID: 6331718824132875222, guid: df7d1c217089397419d333d4685b69fc,
     type: 3}
   pewSound: {fileID: 8300000, guid: f235ac9b16546974c8d4fa5a728c1e90, type: 3}

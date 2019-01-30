@@ -5,22 +5,20 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     private const float speed = 500F;
-    private const float bulletSize = 25F;
+    private const float bulletSize = 75F;
 
     private float xVel;
     private float yVel;
+    private bool isPen = false;
 
     void Start() {
+        // Re-sizes the bullet
         transform.localScale = new Vector3(bulletSize, bulletSize, 0);
 
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-        float x = Input.mousePosition.x - screenPos.x;
-        float y = Input.mousePosition.y - screenPos.y;
-        float angle = Mathf.Atan2(y, x);
+        // Calculates the velocities
+        float angle = transform.localEulerAngles.z * Mathf.Deg2Rad;
         xVel = speed * Mathf.Cos(angle);
         yVel = speed * Mathf.Sin(angle);
-
-        transform.localRotation = Quaternion.Euler(0, 0, angle * 180 / Mathf.PI);
     }
 
     void Update() {
@@ -31,13 +29,16 @@ public class Bullet : MonoBehaviour {
         transform.position = pos;
     }
 
-    void OnBecameInvisible()
-    {
+    void OnBecameInvisible() {
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.name != "Astronaut") {
+    public void penetrate() {
+        isPen = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if ((collision.gameObject.name == "GG(Clone)") && !isPen) {
             Destroy(gameObject);
         }
     }

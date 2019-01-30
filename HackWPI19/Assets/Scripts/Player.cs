@@ -5,18 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
-    public GameObject bullet;
+    public Bullet bullet;
     public HealthBar serialBar;
     public AudioClip pewSound;
     private AudioSource source;
 
     private const float kickBack = 10F;
-    private const float totalHealth = 1f;
-    private const float damage = 0.1f;
+    private const float totalHealth = 1F;
+    private const float damage = 0.1F;
+    private const float shotGunAngle = 60F;
 
     private Vector3 healthBarPos;
-    private float mouseAngle;
-    private float astroAngle;
+    private float mouseAngle; // Degrees
+    private float gunAngle; // Degrees
+    private float astroAngle; // Degrees
     private bool lookRight;
     private float xVel;
     private float yVel;
@@ -40,7 +42,7 @@ public class Player : MonoBehaviour {
         healthBar.setColor(Color.green);
 
         // Initialize variables
-        mouseAngle = 0F;
+        gunAngle = 0F;
         astroAngle = 0F;
         lookRight = true;
         xVel = 0F;
@@ -49,24 +51,15 @@ public class Player : MonoBehaviour {
         // Screen size
         Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         right = screenSize.x;
-        left = 0;
+        left = 0F;
         up = screenSize.y;
-        down = 0;
+        down = 0F;
     }
 
     void Update() {
-        // Angle of mouse
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.GetChild(0).position);
-        float x = Input.mousePosition.x - screenPos.x;
-        float y = Input.mousePosition.y - screenPos.y;
-        mouseAngle = Mathf.Atan2(y, x);
-
-        // Left click - Fire
+        // Left-click
         if (Input.GetMouseButtonDown(0)) {
-            xVel += kickBack * -1 * Mathf.Cos(mouseAngle);
-            yVel += kickBack * -1 * Mathf.Sin(mouseAngle);
-            Instantiate(bullet, transform.GetChild(0).GetChild(0).position, Quaternion.Euler(0, 0, transform.GetChild(0).localRotation.z + astroAngle));
-            source.PlayOneShot(pewSound);
+            shootBullet(false, false);
         }
 
         // Player movement
@@ -91,41 +84,21 @@ public class Player : MonoBehaviour {
     }
 
     private void movePlayer() {
+        // Checks boundaries
         checkBounce();
-        if ((mouseAngle >= -1 * Mathf.PI / 2) && (mouseAngle <= Mathf.PI / 2)) { // right
-            lookRight = true;
-            if (mouseAngle >= 0) { // [0, pi/2]
-                astroAngle = mouseAngle * 180 / Mathf.PI / 2;
-            } else { // [-pi/2, 0)
-                astroAngle = 360 + mouseAngle * 180 / Mathf.PI / 2;
-            }
-            transform.localRotation = Quaternion.Euler(0, 0, astroAngle);
-        } else { // left
-            lookRight = false;
-            if (mouseAngle > 0) { // (pi/2, pi] 
-                astroAngle = 90 - mouseAngle * 180 / Mathf.PI / 2;
-            } else { // [-pi, -pi/2)
-                astroAngle = -1 * (mouseAngle * 180 / Mathf.PI + 180) / 2;
-            }
-            transform.localRotation = Quaternion.Euler(0, 180, astroAngle);
-        }
+
+        // Rotate player and arm/gun
+        updateAngle();
+
+        // Updates position
         Vector3 pos = transform.position;
         pos.x += Time.deltaTime * xVel;
         pos.y += Time.deltaTime * yVel;
         transform.position = pos;
-        Debug.Log("Position: " + pos);
-        Debug.Log("xVel: " + xVel);
-        Debug.Log("yVel: " + yVel);
 
         //Change health pos
         healthBarPos = new Vector3(transform.position.x, transform.position.y - 18, transform.position.z);
         healthBar.transform.position = healthBarPos;
-
-        if (lookRight) {
-            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, mouseAngle * 180 / Mathf.PI - astroAngle);
-        } else {
-            transform.GetChild(0).transform.localRotation = Quaternion.Euler(0, 0, -1 * (mouseAngle * 180 / Mathf.PI) + 180 - astroAngle);
-        }
     }
 
     private void checkBounce() {
@@ -148,5 +121,61 @@ public class Player : MonoBehaviour {
             yVel *= -0.5F;
             health -= damage;
         }
+    }
+
+    private void updateAngle() {
+        // Angle of mouse
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.GetChild(0).position);
+        float x = Input.mousePosition.x - screenPos.x;
+        float y = Input.mousePosition.y - screenPos.y;
+        mouseAngle = Game.transformAngle(Mathf.Atan2(y, x));
+
+        // Angle of movement
+        astroAngle = Game.transformAngle(Mathf.Atan2(yVel, xVel));
+        if ((astroAngle > 90) && (astroAngle < 270)) {
+            astroAngle = astroAngle - 180;
+        }
+
+        // Angle of gun
+        gunAngle = mouseAngle - astroAngle;
+        gunAngle = gunAngle >= 0 ? gunAngle : gunAngle + 360;
+
+        // Transform sprites
+        if ((gunAngle <= 90) || (gunAngle >= 270)) {
+            transform.localRotation = Quaternion.Euler(0, 0, astroAngle);
+            transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, gunAngle);
+        } else {
+            transform.localRotation = Quaternion.Euler(0, 180, 360 - astroAngle);
+            transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 180 - gunAngle);
+        }
+    }
+
+    private void shootBullet(bool pen, bool triple) {
+        Vector3 bullPos = transform.GetChild(0).GetChild(0).position;
+        Quaternion bullAngle = Quaternion.Euler(0, 0, mouseAngle);
+
+        if (!triple) {
+            xVel += kickBack * -1 * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
+            yVel += kickBack * -1 * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
+            Bullet newShot = Instantiate(bullet, bullPos, bullAngle);
+            if (pen) {
+                newShot.penetrate();
+            }
+        } else {
+            xVel += -1 * kickBack * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
+            yVel += -1 * kickBack * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
+            Bullet newShot1 = Instantiate(bullet, bullPos, bullAngle);
+
+            xVel += -2 * Mathf.Cos(shotGunAngle * Mathf.Deg2Rad) * kickBack * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
+            yVel += -2 * Mathf.Cos(shotGunAngle * Mathf.Deg2Rad) * kickBack * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
+            Bullet newShot2 = Instantiate(bullet, bullPos, Quaternion.Euler(0, 0, bullAngle.z + shotGunAngle));
+            Bullet newShot3 = Instantiate(bullet, bullPos, Quaternion.Euler(0, 0, bullAngle.z - shotGunAngle));
+            if (pen) {
+                newShot1.penetrate();
+                newShot2.penetrate();
+                newShot3.penetrate();
+            }
+        }
+        source.PlayOneShot(pewSound);
     }
 }

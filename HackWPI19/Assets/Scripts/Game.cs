@@ -92,4 +92,13 @@ public class Game : MonoBehaviour {
             }
         }
     }
+
+    // Radian [-pi, pi] to degrees [0, 360]
+    public static float transformAngle(float angle) {
+        angle *= Mathf.Rad2Deg;
+        if (angle < 0) {
+            angle += 360;
+        }
+        return angle;
+    }
 }
