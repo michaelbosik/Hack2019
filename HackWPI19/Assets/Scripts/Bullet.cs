@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
-
+    // Constants
     private const float speed = 500F;
     private const float bulletSize = 75F;
 
+    // Attributes
     private float xVel;
     private float yVel;
     private bool isPen = false;
@@ -33,12 +34,13 @@ public class Bullet : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    public void penetrate() {
-        isPen = true;
+    public void togglePenetrate() {
+        isPen = !isPen;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if ((collision.gameObject.name == "GG(Clone)") && !isPen) {
+        string alien = "Alien";
+        if (collision.gameObject.name.Substring(0, alien.Length).Equals(alien) && !isPen) {
             Destroy(gameObject);
         }
     }

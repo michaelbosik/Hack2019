@@ -1,30 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
-
-    public GameObject gg_0;
+    // Unity objects
+    public GameObject alien_0;
     public AudioClip soundByte;
-    public GameObject txtScore;
-    public GameObject txtWave;
-    public GameObject txtLeft;
+    public Text txtScore;
+    public Text txtWave;
+    public Text txtLeft;
+    public Text txtHealth;
 
-    private const int rate = 3;
-    private const int init = 5;
+    // Constants
+    private const int alienRate = 3;
+    private const int alienInit = 5;
+    private const float powerRate = 0.25F;
+    private const int powerInit = 1;
     private const float buffer = 250F;
     private const float zBuff = 10F;
 
+    // Attributes
     private static AudioSource source;
     private int wave;
     public static int score;
-    private List<GameObject> lstGloup;
-    private float right;
-    private float left;
-    private float up;
-    private float down;
+    private List<GameObject> lstAliens;
+    private static float right, left, up, down;
+    private Player player;
+    private PowerUps powerUps;
 
     void Awake() {
         source = GetComponent<AudioSource>();
@@ -34,62 +37,97 @@ public class Game : MonoBehaviour {
         // Initialize variables
         wave = 0;
         score = 0;
-        lstGloup = new List<GameObject>();
+        lstAliens = new List<GameObject>();
         Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         right = screenSize.x;
         left = 0;
         up = screenSize.y;
         down = 0;
+        player = GameObject.Find("Astronaut").GetComponent<Player>();
+        powerUps = GameObject.Find("PowerUps").GetComponent<PowerUps>();
     }
 
     void Update() {
         // HUD text
-        txtScore.GetComponent<Text>().text = "Score: " + score;
-        txtWave.GetComponent<Text>().text = "Wave: " + wave;
-        txtLeft.GetComponent<Text>().text = "Gloups Left: " + lstGloup.Count;
+        txtScore.text = "Score: " + score;
+        txtLeft.text = "Aliens Left: " + lstAliens.Count;
+        txtHealth.text = "Health: " + player.getHealth();
 
         // Quit
         if (Input.GetKey(KeyCode.Escape)) {
             SceneManager.LoadScene("End");
         }
 
-        // Spawn Gloups
-        if (lstGloup.Count == 0) {
-            int numG = rate * wave + init;
-            for (int i = 0; i < numG; i++) {
-                float x, y;
-                int coin = Random.Range(0, 3);
-                switch (coin) {
-                    case 0: // Up
-                        x = Random.Range(left, right);
-                        y = Random.Range(up, up + buffer);
-                        break;
-                    case 1: // Right
-                        x = Random.Range(right, right + buffer);
-                        y = Random.Range(down, up);
-                        break;
-                    case 2: // Down
-                        x = Random.Range(left, right);
-                        y = Random.Range(down - buffer, down);
-                        break;
-                    default: // Left
-                        x = Random.Range(left - buffer, left);
-                        y = Random.Range(down, up);
-                        break;
-                }
+        // Next wave
+        if (lstAliens.Count == 0) {
+            // Spawn aliens
+            int numA = alienRate * wave + alienInit;
+            for (int i = 0; i < numA; i++) {
+                (float x, float y) = randomSpawn(-1);
                 Vector3 pos = new Vector3(x, y, zBuff);
-                GameObject newGloup = Instantiate(gg_0, pos, Quaternion.identity);
-                lstGloup.Add(newGloup);
+                GameObject newAlien = Instantiate(alien_0, pos, Quaternion.identity);
+                lstAliens.Add(newAlien);
             }
-            wave++;
+
+            // Spawn power-ups
+            int numP = (int) (powerRate * wave + powerInit);
+            for (int i = 0; i < numP; i++) {
+                (float x, float y) = randomSpawn(-1);
+                Vector3 pos = new Vector3(x, y, zBuff);
+                GameObject newPowerUp = powerUps.rdmPowerUp();
+                Instantiate(newPowerUp, pos, Quaternion.identity);
+            }
+            
+            // Update wave
+            txtWave.text = "Wave: " + ++wave;
         }
 
-        // Remove dead gloups
-        for (int i = 0; i < lstGloup.Count; i++) {
-            if (lstGloup[i] == null) {
-                lstGloup.RemoveAt(i);
+        // Remove dead aliens
+        for (int i = 0; i < lstAliens.Count; i++) {
+            if (lstAliens[i] == null) {
+                lstAliens.RemoveAt(i);
                 source.PlayOneShot(soundByte);
             }
+        }
+    }
+
+    public static (float, float) randomSpawn(int avoid) {
+        List<int> lstEdges = new List<int> { 0, 1, 2, 3 };
+        if (avoid != -1) {
+            lstEdges.RemoveAt(avoid);
+        }
+        float x, y;
+        int coin = lstEdges[Random.Range(0, lstEdges.Count)];
+        switch (coin) {
+            case 0: // Up
+                x = Random.Range(left, right);
+                y = Random.Range(up, up + buffer);
+                break;
+            case 1: // Right
+                x = Random.Range(right, right + buffer);
+                y = Random.Range(down, up);
+                break;
+            case 2: // Down
+                x = Random.Range(left, right);
+                y = Random.Range(down - buffer, down);
+                break;
+            default: // Left
+                x = Random.Range(left - buffer, left);
+                y = Random.Range(down, up);
+                break;
+        }
+        return (x, y);
+    }
+
+    public static int findEdge(float x, float y) {
+        if (y >= up) {
+            return 0; // Up
+        } else if (x >= right) {
+            return 1; // Right
+        } else if (y <= down) {
+            return 2; // Down
+        } else {
+            return 3; // Left
         }
     }
 

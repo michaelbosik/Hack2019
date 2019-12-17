@@ -4,11 +4,17 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - gg_0: {instanceID: 0}
-  - soundByte: {instanceID: 0}
+  - alien_0: {fileID: 8226693086260396233, guid: db72b6914ecf8b84abf0ffb0443ada57,
+      type: 3}
+  - medkit_0: {fileID: 856249049912224676, guid: cf2fb68450c1b7b42a083ead1a0063c7,
+      type: 3}
+  - shotgun_0: {fileID: 1915255844242284075, guid: 43a0692dbf126204f93ab71ed316607d,
+      type: 3}
+  - soundByte: {fileID: 8300000, guid: 17839d233536c13448b47d5f8ba6eb03, type: 3}
   - txtScore: {instanceID: 0}
   - txtWave: {instanceID: 0}
   - txtLeft: {instanceID: 0}
+  - txtHealth: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

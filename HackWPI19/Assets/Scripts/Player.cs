@@ -13,13 +13,13 @@ public class Player : MonoBehaviour {
     private const float kickBack = 10F;
     private const float totalHealth = 1F;
     private const float damage = 0.1F;
-    private const float shotGunAngle = 60F;
+    private const float shotGunAngle = 5F;
+    private const float shotLimit = 0.25F;
 
     private Vector3 healthBarPos;
     private float mouseAngle; // Degrees
     private float gunAngle; // Degrees
     private float astroAngle; // Degrees
-    private bool lookRight;
     private float xVel;
     private float yVel;
     private float health;
@@ -28,13 +28,15 @@ public class Player : MonoBehaviour {
     private float left;
     private float up;
     private float down;
+    private float shotTimer;
+    private bool shotGun;
 
     void Awake() {
         source = GetComponent<AudioSource>();
     }
 
     void Start() {
-        //Health
+        // Health
         healthBarPos = new Vector3(0, 0, 0);
         healthBar = Instantiate(serialBar, healthBarPos, transform.localRotation);
         health = totalHealth;
@@ -44,7 +46,6 @@ public class Player : MonoBehaviour {
         // Initialize variables
         gunAngle = 0F;
         astroAngle = 0F;
-        lookRight = true;
         xVel = 0F;
         yVel = 0F;
 
@@ -54,12 +55,25 @@ public class Player : MonoBehaviour {
         left = 0F;
         up = screenSize.y;
         down = 0F;
+
+        // Bullet
+        shotTimer = 0;
+        shotGun = false;
     }
 
     void Update() {
         // Left-click
         if (Input.GetMouseButtonDown(0)) {
-            shootBullet(false, false);
+            shotTimer = 0;
+            shootBullet(shotGun);
+        }
+        if (Input.GetMouseButton(0)) {
+            if (shotTimer < shotLimit) {
+                shotTimer += Time.deltaTime;
+            } else {
+                shotTimer = 0;
+                shootBullet(shotGun);
+            }
         }
 
         // Player movement
@@ -79,8 +93,24 @@ public class Player : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.name == "GG(Clone)")
+        if (collision.gameObject.name == "GG(Clone)") {
             health -= damage;
+        }
+    }
+
+    public int getHealth() {
+        return (int) Mathf.Round(health * 100);
+    }
+
+    public void addHealth(float add) {
+        health += add;
+        if (health > totalHealth) {
+            health = totalHealth;
+        }
+    }
+     
+    public void setShotgun(bool isShotgun) {
+        shotGun = isShotgun;
     }
 
     private void movePlayer() {
@@ -150,31 +180,20 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void shootBullet(bool pen, bool triple) {
+    private void shootBullet(bool triple) {
         Vector3 bullPos = transform.GetChild(0).GetChild(0).position;
         Quaternion bullAngle = Quaternion.Euler(0, 0, mouseAngle);
 
-        if (!triple) {
-            xVel += kickBack * -1 * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
-            yVel += kickBack * -1 * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
-            Bullet newShot = Instantiate(bullet, bullPos, bullAngle);
-            if (pen) {
-                newShot.penetrate();
-            }
-        } else {
-            xVel += -1 * kickBack * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
-            yVel += -1 * kickBack * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
-            Bullet newShot1 = Instantiate(bullet, bullPos, bullAngle);
-
+        xVel += -1 * kickBack * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
+        yVel += -1 * kickBack * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
+        Bullet newShot1 = Instantiate(bullet, bullPos, bullAngle);
+        if (triple) {
             xVel += -2 * Mathf.Cos(shotGunAngle * Mathf.Deg2Rad) * kickBack * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
             yVel += -2 * Mathf.Cos(shotGunAngle * Mathf.Deg2Rad) * kickBack * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
-            Bullet newShot2 = Instantiate(bullet, bullPos, Quaternion.Euler(0, 0, bullAngle.z + shotGunAngle));
-            Bullet newShot3 = Instantiate(bullet, bullPos, Quaternion.Euler(0, 0, bullAngle.z - shotGunAngle));
-            if (pen) {
-                newShot1.penetrate();
-                newShot2.penetrate();
-                newShot3.penetrate();
-            }
+            Quaternion upShot = Quaternion.Euler(0, 0, shotGunAngle);
+            Quaternion downShot = Quaternion.Euler(0, 0, -shotGunAngle);
+            Bullet newShot2 = Instantiate(bullet, bullPos, bullAngle * upShot);
+            Bullet newShot3 = Instantiate(bullet, bullPos, bullAngle * downShot);
         }
         source.PlayOneShot(pewSound);
     }
