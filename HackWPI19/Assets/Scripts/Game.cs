@@ -16,6 +16,7 @@ public class Game : MonoBehaviour {
     private const float powerInit = 0.5f;
     private const float buffer = 250f;
     private const float zBuff = 10f;
+    private const float alienVolume = 0.01f;
 
     // Attributes
     private static AudioSource source;
@@ -28,6 +29,7 @@ public class Game : MonoBehaviour {
 
     void Awake() {
         source = GetComponent<AudioSource>();
+        source.volume = 0.25f;
     }
 
     void Start() {
@@ -83,7 +85,7 @@ public class Game : MonoBehaviour {
         for (int i = 0; i < lstAliens.Count; i++) {
             if (lstAliens[i] == null) {
                 lstAliens.RemoveAt(i);
-                source.PlayOneShot(soundByte);
+                source.PlayOneShot(soundByte, alienVolume);
             }
         }
     }

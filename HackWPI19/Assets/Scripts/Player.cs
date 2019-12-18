@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
     private const float totalHealth = 1F;
     private const float damage = 0.1F;
     private const float shotGunAngle = 5F;
+    private const float bulletVolume = 0.01f;
 
     private Vector3 healthBarPos;
     private float mouseAngle, gunAngle, astroAngle; // Degrees
@@ -219,6 +220,6 @@ public class Player : MonoBehaviour {
             Instantiate(bullet, bullPos, bullAngle * upShot);
             Instantiate(bullet, bullPos, bullAngle * downShot);
         }
-        source.PlayOneShot(pewSound);
+        source.PlayOneShot(pewSound, bulletVolume);
     }
 }
