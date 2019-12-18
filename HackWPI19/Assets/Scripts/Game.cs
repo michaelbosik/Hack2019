@@ -7,18 +7,15 @@ public class Game : MonoBehaviour {
     // Unity objects
     public GameObject alien_0;
     public AudioClip soundByte;
-    public Text txtScore;
-    public Text txtWave;
-    public Text txtLeft;
-    public Text txtHealth;
+    public Text txtScore, txtWave, txtLeft, txtHealth;
 
     // Constants
     private const int alienRate = 3;
     private const int alienInit = 5;
-    private const float powerRate = 0.25F;
-    private const int powerInit = 1;
-    private const float buffer = 250F;
-    private const float zBuff = 10F;
+    private const float powerRate = 0.25f;
+    private const float powerInit = 0.5f;
+    private const float buffer = 250f;
+    private const float zBuff = 10f;
 
     // Attributes
     private static AudioSource source;
@@ -27,7 +24,7 @@ public class Game : MonoBehaviour {
     private List<GameObject> lstAliens;
     private static float right, left, up, down;
     private Player player;
-    private PowerUps powerUps;
+    private PowerUpManager powerUpManager;
 
     void Awake() {
         source = GetComponent<AudioSource>();
@@ -44,7 +41,7 @@ public class Game : MonoBehaviour {
         up = screenSize.y;
         down = 0;
         player = GameObject.Find("Astronaut").GetComponent<Player>();
-        powerUps = GameObject.Find("PowerUps").GetComponent<PowerUps>();
+        powerUpManager = GameObject.Find("PowerUpManager").GetComponent<PowerUpManager>();
     }
 
     void Update() {
@@ -74,7 +71,7 @@ public class Game : MonoBehaviour {
             for (int i = 0; i < numP; i++) {
                 (float x, float y) = randomSpawn(-1);
                 Vector3 pos = new Vector3(x, y, zBuff);
-                GameObject newPowerUp = powerUps.rdmPowerUp();
+                GameObject newPowerUp = powerUpManager.rdmPowerUp();
                 Instantiate(newPowerUp, pos, Quaternion.identity);
             }
             

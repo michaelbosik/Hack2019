@@ -1,4 +1,5 @@
-﻿public class Shotgun : TimedPowerUp {
+﻿public class MedKit : PowerUp {
+    private const float health = 0.1F;
 
     void Start() {
         initPowerUp();
@@ -9,6 +10,6 @@
     }
 
     protected override void callPowerUp() {
-        powerUpManager.shotgun(duration);
+        powerUpManager.medKit(health);
     }
 }

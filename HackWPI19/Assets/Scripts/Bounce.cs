@@ -1,14 +1,14 @@
-﻿public class Shotgun : TimedPowerUp {
+﻿public class Bounce : TimedPowerUp {
 
     void Start() {
         initPowerUp();
     }
-
+    
     void Update() {
         updatePowerUp();
     }
 
     protected override void callPowerUp() {
-        powerUpManager.shotgun(duration);
+        powerUpManager.bounce(duration);
     }
 }

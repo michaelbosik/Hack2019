@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Medkit : MonoBehaviour {
+public abstract class PowerUp : MonoBehaviour {
     private const float size = 100F;
     private const float speed = 25F;
-    private const float health = 0.1F;
-
+    
     private float xVel, yVel;
-
-    void Start() {
+    protected PowerUpManager powerUpManager;
+    
+    protected void initPowerUp() {
         transform.localScale = new Vector3(size, size, 0);
 
         float curX = transform.position.x;
@@ -18,29 +16,33 @@ public class Medkit : MonoBehaviour {
         (float destX, float destY) = Game.randomSpawn(edge);
         float x = destX - curX;
         float y = destY - curY;
-        
+
         float angle = Mathf.Atan2(y, x);
 
         xVel = speed * Mathf.Cos(angle);
         yVel = speed * Mathf.Sin(angle);
+        
+        powerUpManager = GameObject.Find("PowerUpManager").GetComponent<PowerUpManager>();
     }
-
-    void Update() {
+    
+    protected void updatePowerUp() {
         Vector3 pos = transform.position;
 
-        pos.x += Time.deltaTime * xVel;
-        pos.y += Time.deltaTime * yVel;
+        float tDelta = Time.deltaTime;
+        pos.x += tDelta * xVel;
+        pos.y += tDelta * yVel;
         transform.position = pos;
     }
-
-    void OnBecameInvisible() {
+    
+    private void OnBecameInvisible() {
         Destroy(gameObject);
     }
-
+    
+    protected abstract void callPowerUp();
+    
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.name == "Astronaut") {
-            GameObject player = GameObject.Find("Astronaut");
-            player.GetComponent<Player>().addHealth(health);
+            callPowerUp();
             Destroy(gameObject);
         }
     }

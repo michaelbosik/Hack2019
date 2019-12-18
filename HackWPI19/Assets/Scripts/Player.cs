@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
@@ -14,22 +12,15 @@ public class Player : MonoBehaviour {
     private const float totalHealth = 1F;
     private const float damage = 0.1F;
     private const float shotGunAngle = 5F;
-    private const float shotLimit = 0.25F;
 
     private Vector3 healthBarPos;
-    private float mouseAngle; // Degrees
-    private float gunAngle; // Degrees
-    private float astroAngle; // Degrees
-    private float xVel;
-    private float yVel;
+    private float mouseAngle, gunAngle, astroAngle; // Degrees
+    private float xVel, yVel;
     private float health;
     private HealthBar healthBar;
-    private float right;
-    private float left;
-    private float up;
-    private float down;
-    private float shotTimer;
-    private bool shotGun;
+    private float right, left, up, down;
+    private float shotTimer, shotLimit;
+    private bool isShotgun, isLaser, isBounce;
 
     void Awake() {
         source = GetComponent<AudioSource>();
@@ -58,21 +49,24 @@ public class Player : MonoBehaviour {
 
         // Bullet
         shotTimer = 0;
-        shotGun = false;
+        shotLimit = 0.25F;
+        isShotgun = false;
+        isLaser = false;
+        isBounce = false;
     }
 
     void Update() {
         // Left-click
         if (Input.GetMouseButtonDown(0)) {
             shotTimer = 0;
-            shootBullet(shotGun);
+            shootBullet(isShotgun);
         }
         if (Input.GetMouseButton(0)) {
             if (shotTimer < shotLimit) {
                 shotTimer += Time.deltaTime;
             } else {
                 shotTimer = 0;
-                shootBullet(shotGun);
+                shootBullet(isShotgun);
             }
         }
 
@@ -93,7 +87,8 @@ public class Player : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.name == "GG(Clone)") {
+        string alien = "Alien";
+        if (collision.gameObject.name.Substring(0, alien.Length).Equals(alien)) {
             health -= damage;
         }
     }
@@ -109,8 +104,29 @@ public class Player : MonoBehaviour {
         }
     }
      
-    public void setShotgun(bool isShotgun) {
-        shotGun = isShotgun;
+    public void setShotgun(bool isShotgun_) {
+        isShotgun = isShotgun_;
+    }
+
+    public void setLaser(bool isLaser_) {
+        isLaser = isLaser_;
+    }
+
+    public bool getLaser() {
+        return isLaser;
+    }
+
+    public void setRapidFire(bool isRapidFire, float multiplier) {
+        if (isRapidFire) {
+            shotLimit /= multiplier;
+        } else {
+            shotLimit *= multiplier;
+        }
+        Debug.Log(shotLimit);
+    }
+
+    public void setBounce(bool isBounce_) {
+        isBounce = isBounce_;
     }
 
     private void movePlayer() {
@@ -139,8 +155,12 @@ public class Player : MonoBehaviour {
             } else {
                 transform.position = new Vector3(right, transform.position.y, transform.position.z);
             }
-            xVel *= -0.5F;
-            health -= damage;
+            if (!isBounce) {
+                health -= damage;
+                xVel *= -0.5F;
+            } else {
+                xVel *= -1f;
+            }
         }
         if ((astroPos.y < down) || (astroPos.y > up)) {
             if (astroPos.y < down) {
@@ -148,8 +168,12 @@ public class Player : MonoBehaviour {
             } else {
                 transform.position = new Vector3(transform.position.x, up, transform.position.z);
             }
-            yVel *= -0.5F;
-            health -= damage;
+            if (!isBounce) {
+                health -= damage;
+                yVel *= -0.5F;
+            } else {
+                yVel *= -1f;
+            }
         }
     }
 
@@ -186,14 +210,14 @@ public class Player : MonoBehaviour {
 
         xVel += -1 * kickBack * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
         yVel += -1 * kickBack * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
-        Bullet newShot1 = Instantiate(bullet, bullPos, bullAngle);
+        Instantiate(bullet, bullPos, bullAngle);
         if (triple) {
             xVel += -2 * Mathf.Cos(shotGunAngle * Mathf.Deg2Rad) * kickBack * Mathf.Cos(mouseAngle * Mathf.Deg2Rad);
             yVel += -2 * Mathf.Cos(shotGunAngle * Mathf.Deg2Rad) * kickBack * Mathf.Sin(mouseAngle * Mathf.Deg2Rad);
             Quaternion upShot = Quaternion.Euler(0, 0, shotGunAngle);
             Quaternion downShot = Quaternion.Euler(0, 0, -shotGunAngle);
-            Bullet newShot2 = Instantiate(bullet, bullPos, bullAngle * upShot);
-            Bullet newShot3 = Instantiate(bullet, bullPos, bullAngle * downShot);
+            Instantiate(bullet, bullPos, bullAngle * upShot);
+            Instantiate(bullet, bullPos, bullAngle * downShot);
         }
         source.PlayOneShot(pewSound);
     }

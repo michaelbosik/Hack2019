@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bullet : MonoBehaviour {
     // Constants
@@ -10,7 +8,8 @@ public class Bullet : MonoBehaviour {
     // Attributes
     private float xVel;
     private float yVel;
-    private bool isPen = false;
+    private Player player;
+    private bool isPen;
 
     void Start() {
         // Re-sizes the bullet
@@ -20,6 +19,9 @@ public class Bullet : MonoBehaviour {
         float angle = transform.localEulerAngles.z * Mathf.Deg2Rad;
         xVel = speed * Mathf.Cos(angle);
         yVel = speed * Mathf.Sin(angle);
+        
+        player = GameObject.Find("Astronaut").GetComponent<Player>();
+        isPen = player.getLaser();
     }
 
     void Update() {
@@ -32,10 +34,6 @@ public class Bullet : MonoBehaviour {
 
     void OnBecameInvisible() {
         Destroy(gameObject);
-    }
-
-    public void togglePenetrate() {
-        isPen = !isPen;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
