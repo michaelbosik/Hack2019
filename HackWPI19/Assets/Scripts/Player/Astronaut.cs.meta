@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 700dc448ce9d36446b973fdb1dd68518
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bullet: {fileID: 7253841665523882198, guid: 422488b0ecc7cb344a7716e7462f2412,
+      type: 3}
+  - serialBar: {fileID: 6331718824132875221, guid: df7d1c217089397419d333d4685b69fc,
+      type: 3}
+  - pewSound: {fileID: 8300000, guid: f235ac9b16546974c8d4fa5a728c1e90, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
