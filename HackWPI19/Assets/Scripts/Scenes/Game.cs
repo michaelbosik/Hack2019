@@ -9,15 +9,16 @@ using UnityEngine.UI;
 namespace Scenes {
     public class Game : MonoBehaviour {
         // Unity objects
-        public GameObject alien_0;
+        public GameObject alienDrone, alienKing;
         public Text txtScore, txtWave, txtLeft, txtHealth;
 
         // Constants
         private const int alienRate = 3;
         private const int alienInit = 5;
+        private const int kingRounds = 2;
         private const float powerRate = 0.25f;
         private const float powerInit = 0.5f;
-        private const float buffer = 250f;
+        private const float buffer = 50f;
         private const float zBuff = 10f;
 
         // Attributes
@@ -56,12 +57,25 @@ namespace Scenes {
             // Next wave
             if (lstAliens.Count == 0) {
                 // Spawn aliens
-                int numA = alienRate * wave + alienInit;
-                for (int i = 0; i < numA; i++) {
+                int numDrone, numKing;
+                if ((wave + 1) % kingRounds != 0) {
+                    numDrone = alienRate * wave + alienInit;
+                    numKing = 0;
+                } else {
+                    numDrone = (alienRate * wave + alienInit) / 2;
+                    numKing = (wave + 1) / kingRounds;
+                }
+                for (int i = 0; i < numDrone; i++) {
                     (float x, float y) = randomSpawn(-1);
                     Vector3 pos = new Vector3(x, y, zBuff);
-                    GameObject newAlien = Instantiate(alien_0, pos, Quaternion.identity);
+                    GameObject newAlien = Instantiate(alienDrone, pos, Quaternion.identity);
                     lstAliens.Add(newAlien);
+                }
+                for (int i = 0; i < numKing; i++) {
+                    (float x, float y) = randomSpawn(-1);
+                    Vector3 pos = new Vector3(x, y, zBuff);
+                    GameObject newAlien = Instantiate(alienKing, pos, Quaternion.identity);
+                    // lstAliens.Add(newAlien);
                 }
 
                 // Spawn power-ups

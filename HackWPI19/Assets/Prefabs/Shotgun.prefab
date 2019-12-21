@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1915255844242284074}
   - component: {fileID: 1915255844242284079}
-  - component: {fileID: 1915255844242284076}
   - component: {fileID: 1915255844242284077}
   - component: {fileID: 7344349973097760157}
+  - component: {fileID: 1211949547857433533}
   m_Layer: 5
   m_Name: Shotgun
   m_TagString: Untagged
@@ -87,32 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &1915255844242284076
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1915255844242284075}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
-    newSize: {x: 0.32, y: 0.32}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.32}
-  m_EdgeRadius: 0
 --- !u!50 &1915255844242284077
 Rigidbody2D:
   serializedVersion: 4
@@ -146,3 +120,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b7ed1e9f1f8904db32ce7fa7fafa2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &1211949547857433533
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915255844242284075}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.16

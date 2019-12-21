@@ -1,11 +1,9 @@
-﻿using System;
-using Enums;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Aliens {
     public class AlienManager : MonoBehaviour {
         // Unity objects
-        public AudioClip soundByte;
+        public AudioClip deathNoise;
         
         // Attributes
         private AudioSource source;
@@ -14,8 +12,8 @@ namespace Aliens {
             source = GetComponent<AudioSource>();
         }
 
-        public void deathNoise(float alienVolume) {
-            source.PlayOneShot(soundByte, alienVolume);
+        public void playDeathNoise(float alienVolume) {
+            source.PlayOneShot(deathNoise, alienVolume);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Enums {
     public enum ScriptNames {
-        Menu, Game, End, PowerUpManager, AlienManager
+        Menu, Game, End, PowerUpManager, AlienManager, PlayerManager
     }
 
     static class ScriptNamesMethods {

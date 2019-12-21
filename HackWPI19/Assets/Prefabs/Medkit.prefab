@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 856249049912224673}
   - component: {fileID: 856249049912224672}
   - component: {fileID: 856249049912224675}
-  - component: {fileID: 856249049912224674}
+  - component: {fileID: 8182303316411393944}
   m_Layer: 5
-  m_Name: Medkit
+  m_Name: MedKit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,8 +120,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &856249049912224674
-BoxCollider2D:
+--- !u!60 &8182303316411393944
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -143,6 +143,15 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.32}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 0.12}
+      - {x: -0.07, y: 0.08}
+      - {x: -0.12, y: 0.04}
+      - {x: -0.16, y: -0.02}
+      - {x: -0.16, y: -0.089999996}
+      - {x: -0.14999999, y: -0.11}
+      - {x: 0.11, y: -0.11}
+      - {x: 0.16, y: -0.01}
+      - {x: 0.16, y: 0.07}
+      - {x: 0.08, y: 0.12}

@@ -7,14 +7,12 @@ namespace Player {
     public class Astronaut : MonoBehaviour {
         // Unity objects
         public GameObject bullet, serialBar;
-        public AudioClip pewSound;
-        
+
         // Constants
         private const float kickBack = 10F;
         private const float totalHealth = 1F;
         private const float damage = 0.1F;
         private const float shotGunAngle = 5F;
-        private const float bulletVolume = 1f;
 
         // Attributes
         private Vector3 healthBarPos;
@@ -25,11 +23,6 @@ namespace Player {
         private float right, left, up, down;
         private float shotTimer, shotLimit;
         private bool isShotgun, isLaser, isBounce;
-        private AudioSource source;
-
-        void Awake() {
-            source = GetComponent<AudioSource>();
-        }
 
         void Start() {
             // Health
@@ -92,7 +85,8 @@ namespace Player {
         }
 
         void OnCollisionEnter2D(Collision2D collision) {
-            if (collision.gameObject.name.Equals(SpriteNames.AlienDrone.GetString())) {
+            if (collision.gameObject.name.Equals(SpriteNames.AlienDrone.GetString()) ||
+                collision.gameObject.name.Equals(SpriteNames.AlienKing.GetString())) {
                 health -= damage;
             }
         }
@@ -222,7 +216,6 @@ namespace Player {
                 Instantiate(bullet, bullPos, bullAngle * upShot);
                 Instantiate(bullet, bullPos, bullAngle * downShot);
             }
-            source.PlayOneShot(pewSound, bulletVolume);
         }
     }
 }

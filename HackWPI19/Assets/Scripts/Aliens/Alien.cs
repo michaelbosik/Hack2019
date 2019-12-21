@@ -6,24 +6,23 @@ using Random = UnityEngine.Random;
 namespace Aliens {
     public abstract class Alien : MonoBehaviour {
         // Constants
-        private const float alienSpeed = 45F;
-        private const float alienSpeedDev = 10F;
-        private const float alienSize = 50F;
-        private const float alienASizeDev = 10F;
 
         // Attributes
-        private float rdmSpeed;
         protected AlienManager alienManager;
+        private float speed;
+        protected int health;
 
         private void Start() {
             alienManager = GameObject.Find(ScriptNames.AlienManager.GetString()).GetComponent<AlienManager>();
             
             // Create alien with random size
-            float rdmSize = Random.Range(alienSize - alienASizeDev, alienSize + alienASizeDev);
-            transform.localScale = new Vector3(rdmSize, rdmSize, 0);
+            float size = getSize();
+            transform.localScale = new Vector3(size, size, 0);
 
             // Create random speed for alien
-            rdmSpeed = Random.Range(alienSpeed - alienSpeedDev, alienSpeed + alienSpeedDev);
+            speed = getSpeed();
+
+            health = getTotalHealth();
         }
 
         private void Update() {
@@ -33,8 +32,8 @@ namespace Aliens {
             float x = player.transform.position.x - transform.position.x;
             float y = player.transform.position.y - transform.position.y;
             float angle = Mathf.Atan2(y, x);
-            float xVel = rdmSpeed * Mathf.Cos(angle);
-            float yVel = rdmSpeed * Mathf.Sin(angle);
+            float xVel = speed * Mathf.Cos(angle);
+            float yVel = speed * Mathf.Sin(angle);
             Vector3 pos = transform.position;
 
             pos.x += Time.deltaTime * xVel;
@@ -44,19 +43,19 @@ namespace Aliens {
         }
         
         void OnCollisionEnter2D(Collision2D collision) {
-            // If collides with a bullet or the player, die
-            if (collision.gameObject.name.Equals(SpriteNames.Astronaut.GetString()) || collision.gameObject.name.Equals(SpriteNames.Bullet.GetString())) {
-                // If collides with bullet, increase score
-                if (collision.gameObject.name.Equals(SpriteNames.Bullet.GetString())) {
-                    Game.score += getDeathPoints();
-                }
-                deathNoise();
-                Destroy(gameObject);
-            }
+            onCollision(collision);
         }
+
+        protected abstract float getSize();
+
+        protected abstract float getSpeed();
+
+        protected abstract int getTotalHealth();
+
+        protected abstract void onCollision(Collision2D collision);
 
         protected abstract int getDeathPoints();
 
-        protected abstract void deathNoise();
+        protected abstract void playDeathNoise();
     }
 }

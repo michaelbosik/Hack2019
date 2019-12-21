@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 4873900409515686805}
   - component: {fileID: 6449037072456082978}
   - component: {fileID: 6375297185420353290}
-  - component: {fileID: 1739789862851056862}
   - component: {fileID: 6245238820796371942}
   - component: {fileID: 4824440320886004201}
+  - component: {fileID: 621188842960972363}
   m_Layer: 8
-  m_Name: GG
+  m_Name: AlienDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,33 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdfb652ac071e9a44b60963a6c8d8692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gloupSound: {fileID: 8300000, guid: 17839d233536c13448b47d5f8ba6eb03, type: 3}
---- !u!61 &1739789862851056862
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8226693086260396233}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.77, y: 0.43}
-    newSize: {x: 0.77, y: 0.43}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.77, y: 0.43}
-  m_EdgeRadius: 0
 --- !u!50 &6245238820796371942
 Rigidbody2D:
   serializedVersion: 4
@@ -239,3 +212,42 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!60 &621188842960972363
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8226693086260396233}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.77, y: 0.43}
+    newSize: {x: 0.77, y: 0.43}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.225, y: 0.035}
+      - {x: 0.225, y: 0.21499999}
+      - {x: 0.105, y: 0.21499999}
+      - {x: 0.024999999, y: 0.185}
+      - {x: -0.205, y: 0.13499999}
+      - {x: -0.285, y: 0.074999996}
+      - {x: -0.285, y: -0.035}
+      - {x: -0.255, y: -0.114999995}
+      - {x: -0.16499999, y: -0.13499999}
+      - {x: 0.145, y: -0.205}
+      - {x: 0.21499999, y: -0.205}
+      - {x: 0.225, y: -0.175}
+      - {x: 0.225, y: -0.065}
+      - {x: 0.205, y: -0.024999999}

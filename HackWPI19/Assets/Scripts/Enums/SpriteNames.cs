@@ -2,7 +2,7 @@
 
 namespace Enums {
     public enum SpriteNames {
-        Astronaut, AlienDrone, Bullet, MedKit, Laser, RapidFire, Shotgun, Bounce
+        Astronaut, AlienDrone, AlienKing, Bullet, MedKit, Laser, RapidFire, Shotgun, Bounce
     }
 
     static class SpriteNamesMethods {
