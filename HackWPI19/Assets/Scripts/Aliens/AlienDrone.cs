@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace Aliens {
     public class AlienDrone : Alien {
+        // Constants
         private const float alienSize = 50F;
         private const float alienSizeDev = 10F;
         private const float alienSpeed = 45F;
         private const float alienSpeedDev = 10F;
-
-        private const int totalHealth = 1;
+        
+        // Attributes
         private const int deathPoints = 1;
         private const float alienVolume = 0.01f;
 
@@ -21,9 +22,9 @@ namespace Aliens {
             return Random.Range(alienSpeed - alienSpeedDev, alienSpeed + alienSpeedDev);
         }
 
-        protected override int getTotalHealth() {
-            return totalHealth;
-        }
+        protected override void onStart() { }
+
+        protected override void onUpdate() { }
 
         protected override void onCollision(Collision2D collision) {
             if (collision.gameObject.name.Equals(SpriteNames.Astronaut.GetString()) || collision.gameObject.name.Equals(SpriteNames.Bullet.GetString())) {

@@ -5,40 +5,42 @@ using Random = UnityEngine.Random;
 
 namespace Aliens {
     public abstract class Alien : MonoBehaviour {
-        // Constants
-
+        // Unity objects
+        public GameObject serialBar;
+        
         // Attributes
         protected AlienManager alienManager;
+        private GameObject astronaut;
         private float speed;
-        protected int health;
 
         private void Start() {
             alienManager = GameObject.Find(ScriptNames.AlienManager.GetString()).GetComponent<AlienManager>();
-            
-            // Create alien with random size
+            astronaut = GameObject.Find(SpriteNames.Astronaut.GetString());
+
             float size = getSize();
             transform.localScale = new Vector3(size, size, 0);
-
-            // Create random speed for alien
             speed = getSpeed();
 
-            health = getTotalHealth();
+            onStart();
         }
 
         private void Update() {
-            // Tracks player
-            GameObject player = GameObject.Find(SpriteNames.Astronaut.GetString());
+            trackPlayer();
+            onUpdate();
+        }
 
-            float x = player.transform.position.x - transform.position.x;
-            float y = player.transform.position.y - transform.position.y;
+        private void trackPlayer() {
+            Vector3 astroPos = astronaut.transform.position;
+            Vector3 alienPos = transform.position;
+            float x = astroPos.x - alienPos.x;
+            float y = astroPos.y - alienPos.y;
             float angle = Mathf.Atan2(y, x);
             float xVel = speed * Mathf.Cos(angle);
             float yVel = speed * Mathf.Sin(angle);
-            Vector3 pos = transform.position;
 
-            pos.x += Time.deltaTime * xVel;
-            pos.y += Time.deltaTime * yVel;
-            transform.position = pos;
+            alienPos.x += Time.deltaTime * xVel;
+            alienPos.y += Time.deltaTime * yVel;
+            transform.position = alienPos;
             transform.localRotation = Quaternion.Euler(0, 0, angle * 180 / Mathf.PI);
         }
         
@@ -47,15 +49,11 @@ namespace Aliens {
         }
 
         protected abstract float getSize();
-
         protected abstract float getSpeed();
-
-        protected abstract int getTotalHealth();
-
+        protected abstract void onStart();
+        protected abstract void onUpdate();
         protected abstract void onCollision(Collision2D collision);
-
         protected abstract int getDeathPoints();
-
         protected abstract void playDeathNoise();
     }
 }

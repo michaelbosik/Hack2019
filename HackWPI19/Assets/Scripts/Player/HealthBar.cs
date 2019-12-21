@@ -11,5 +11,9 @@ namespace Player {
         public void setColor(Color color) {
             transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = color;
         }
+
+        public void destroy() {
+            Destroy(gameObject);
+        }
     }
 }

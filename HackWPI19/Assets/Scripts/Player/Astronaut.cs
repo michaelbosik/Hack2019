@@ -1,4 +1,5 @@
-﻿using Enums;
+﻿using System;
+using Enums;
 using Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,15 +10,18 @@ namespace Player {
         public GameObject bullet, serialBar;
 
         // Constants
-        private const float kickBack = 10F;
-        private const float totalHealth = 1F;
-        private const float damage = 0.1F;
-        private const float shotGunAngle = 5F;
+        private const float kickBack = 10f;
+        private const float hitCoolDown = 0.5f;
+        private const float totalHealth = 1f;
+        private const float damage = 0.1f;
+        private const float shotGunAngle = 5f;
+        private const int healthBarOffset = 18;
 
         // Attributes
         private Vector3 healthBarPos;
         private float mouseAngle, gunAngle, astroAngle; // Degrees
         private float xVel, yVel;
+        private float coolDownTimer;
         private float health;
         private HealthBar healthBar;
         private float right, left, up, down;
@@ -26,6 +30,7 @@ namespace Player {
 
         void Start() {
             // Health
+            coolDownTimer = 0;
             healthBarPos = new Vector3(0, 0, 0);
             healthBar = Instantiate(serialBar, healthBarPos, transform.localRotation).GetComponent<HealthBar>();
             health = totalHealth;
@@ -85,9 +90,23 @@ namespace Player {
         }
 
         void OnCollisionEnter2D(Collision2D collision) {
-            if (collision.gameObject.name.Equals(SpriteNames.AlienDrone.GetString()) ||
-                collision.gameObject.name.Equals(SpriteNames.AlienKing.GetString())) {
+            string colObj = collision.gameObject.name;
+            if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString())) {
                 health -= damage;
+                if (colObj.Equals(SpriteNames.AlienKing.GetString())) {
+                    coolDownTimer = 0;
+                }
+            }
+        }
+
+        private void OnCollisionStay2D(Collision2D collision) {
+            string colObj = collision.gameObject.name;
+            if (colObj.Equals(SpriteNames.AlienKing.GetString())) {
+                coolDownTimer += Time.deltaTime;
+                if (coolDownTimer > hitCoolDown) {
+                    health -= damage;
+                    coolDownTimer = 0;
+                }
             }
         }
 
@@ -139,8 +158,8 @@ namespace Player {
             pos.y += Time.deltaTime * yVel;
             transform.position = pos;
 
-            //Change health pos
-            healthBarPos = new Vector3(transform.position.x, transform.position.y - 18, transform.position.z);
+            // Change health pos
+            healthBarPos = new Vector3(transform.position.x, transform.position.y - healthBarOffset, transform.position.z);
             healthBar.transform.position = healthBarPos;
         }
 
