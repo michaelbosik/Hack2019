@@ -15,7 +15,8 @@ namespace Scenes {
         // Constants
         private const int alienRate = 3;
         private const int alienInit = 5;
-        private const int kingRounds = 2;
+        private const int kingRounds = 4;
+        private const float kingRate = 0.75f;
         private const float powerRate = 0.25f;
         private const float powerInit = 0.5f;
         private const float buffer = 50f;
@@ -62,7 +63,7 @@ namespace Scenes {
                     numDrone = alienRate * wave + alienInit;
                     numKing = 0;
                 } else {
-                    numDrone = (alienRate * wave + alienInit) / 2;
+                    numDrone = (int) ((alienRate * wave + alienInit) * kingRate);
                     numKing = (wave + 1) / kingRounds;
                 }
                 for (int i = 0; i < numDrone; i++) {
