@@ -580,10 +580,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 70bdf31e-7100-40f1-8c87-fcedf53d8011
+  cloudProjectId: 9cb1f8ed-696a-4b6d-a9a3-0fd6260d1ac5
   framebufferDepthMemorylessMode: 0
-  projectName: HackWPI19
-  organizationId: michaelbosik
+  projectName: Alone
+  organizationId: miandoli8
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
