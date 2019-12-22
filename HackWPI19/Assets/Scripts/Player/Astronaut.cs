@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 namespace Player {
     public class Astronaut : MonoBehaviour {
         // Unity objects
-        public GameObject bullet, serialBar;
+        public GameObject bullet, serialBar, bubble;
 
         // Constants
         private const float kickBack = 10f;
@@ -27,6 +27,7 @@ namespace Player {
         private float right, left, up, down;
         private float shotTimer, shotLimit;
         private bool isShotgun, isLaser, isBounce;
+        private Bubble bubbleAstro;
 
         void Start() {
             // Health
@@ -93,15 +94,13 @@ namespace Player {
             string colObj = collision.gameObject.name;
             if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString())) {
                 health -= damage;
-                if (colObj.Equals(SpriteNames.AlienKing.GetString())) {
-                    coolDownTimer = 0;
-                }
+                coolDownTimer = 0;
             }
         }
 
         private void OnCollisionStay2D(Collision2D collision) {
             string colObj = collision.gameObject.name;
-            if (colObj.Equals(SpriteNames.AlienKing.GetString())) {
+            if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString())) {
                 coolDownTimer += Time.deltaTime;
                 if (coolDownTimer > hitCoolDown) {
                     health -= damage;
@@ -143,6 +142,11 @@ namespace Player {
 
         public void setBounce(bool isBounce_) {
             isBounce = isBounce_;
+            if (isBounce_) {
+                bubbleAstro = Instantiate(bubble, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Bubble>();
+            } else {
+                bubbleAstro.destroy();
+            }
         }
 
         private void movePlayer() {

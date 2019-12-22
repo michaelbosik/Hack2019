@@ -304,6 +304,7 @@ MonoBehaviour:
   bullet: {fileID: 7253841665523882198, guid: 422488b0ecc7cb344a7716e7462f2412, type: 3}
   serialBar: {fileID: 6331718824132875221, guid: df7d1c217089397419d333d4685b69fc,
     type: 3}
+  bubble: {fileID: 4545318939585576377, guid: 4598fa1ebc9f5b444a61708b0fb4a1af, type: 3}
 --- !u!212 &324627618
 SpriteRenderer:
   m_ObjectHideFlags: 0

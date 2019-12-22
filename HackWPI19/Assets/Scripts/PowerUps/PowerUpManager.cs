@@ -95,7 +95,8 @@ namespace PowerUps {
         }
 
         public GameObject rdmPowerUp() {
-            GameObject[] powerUps = {medKit_0, shotgun_0, laser_0, rapidFire_0, bounce_0};
+            // GameObject[] powerUps = {medKit_0, shotgun_0, laser_0, rapidFire_0, bounce_0};
+            GameObject[] powerUps = {bounce_0};
             return powerUps[Random.Range(0, powerUps.Length)];
         }
 

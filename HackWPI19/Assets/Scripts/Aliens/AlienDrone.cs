@@ -26,15 +26,10 @@ namespace Aliens {
 
         protected override void onUpdate() { }
 
-        protected override void onCollision(Collision2D collision) {
-            if (collision.gameObject.name.Equals(SpriteNames.Astronaut.GetString()) || collision.gameObject.name.Equals(SpriteNames.Bullet.GetString())) {
-                // If collides with bullet, increase score
-                if (collision.gameObject.name.Equals(SpriteNames.Bullet.GetString())) {
-                    Game.score += getDeathPoints();
-                }
-                playDeathNoise();
-                Destroy(gameObject);
-            }
+        protected override void onShot() {
+            Game.score += getDeathPoints();
+            playDeathNoise();
+            Destroy(gameObject);
         }
 
         protected override int getDeathPoints() {

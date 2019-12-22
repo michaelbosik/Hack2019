@@ -1,7 +1,5 @@
 ﻿using Enums;
-using Scenes;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Aliens {
     public abstract class Alien : MonoBehaviour {
@@ -45,14 +43,16 @@ namespace Aliens {
         }
         
         void OnCollisionEnter2D(Collision2D collision) {
-            onCollision(collision);
+            if (collision.gameObject.name.Equals(SpriteNames.Bullet.GetString())) {
+                onShot();
+            }
         }
 
         protected abstract float getSize();
         protected abstract float getSpeed();
         protected abstract void onStart();
         protected abstract void onUpdate();
-        protected abstract void onCollision(Collision2D collision);
+        protected abstract void onShot();
         protected abstract int getDeathPoints();
         protected abstract void playDeathNoise();
     }

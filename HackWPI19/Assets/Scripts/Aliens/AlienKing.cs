@@ -48,7 +48,7 @@ namespace Aliens {
             healthBar.setSize(curHealth);
         }
 
-        protected override void onCollision(Collision2D collision) {
+        protected override void onShot() {
             if (--health <= 0) {
                 Game.score += getDeathPoints();
                 playDeathNoise();
