@@ -19,7 +19,7 @@ namespace Scenes {
         private const float kingRate = 0.75f;
         private const float powerRate = 0.25f;
         private const float powerInit = 0.5f;
-        private const float buffer = 50f;
+        private const float buffer = 250f;
         private const float zBuff = 10f;
 
         // Attributes
