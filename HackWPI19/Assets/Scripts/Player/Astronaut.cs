@@ -143,7 +143,9 @@ namespace Player {
         public void setBounce(bool isBounce_) {
             isBounce = isBounce_;
             if (isBounce_) {
-                bubbleAstro = Instantiate(bubble, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Bubble>();
+                if (bubbleAstro == null) {
+                    bubbleAstro = Instantiate(bubble, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Bubble>();
+                }
             } else {
                 bubbleAstro.destroy();
             }
