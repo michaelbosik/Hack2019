@@ -4,8 +4,8 @@ using UnityEngine;
 namespace Player {
     public class Bullet : MonoBehaviour {
         // Constants
-        private const float speed = 500F;
-        private const float bulletSize = 75F;
+        private const float speed = 500f;
+        private const float bulletSize = 2.5f;
         private const float bulletVolume = 0.01f;
 
         // Attributes

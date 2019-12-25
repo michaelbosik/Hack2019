@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Player {
     public class Bubble : MonoBehaviour {
         // Constants
-        private const float size = 15f;
+        private const float size = 10f;
         
         // Attributes
         private GameObject astronaut;
@@ -15,8 +15,11 @@ namespace Player {
         }
 
         void Update() {
-            Vector3 pos = astronaut.transform.position;
-            gameObject.transform.position = new Vector3(pos.x, pos.y, pos.z);
+            if (astronaut != null) {
+                gameObject.transform.position = astronaut.transform.position;
+            } else {
+                Destroy(gameObject);
+            }
         }
 
         public void destroy() {

@@ -1,37 +1,48 @@
-﻿using Player;
+﻿using System;
+using Player;
 using Scenes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Aliens {
     public class AlienKing : Alien {
         // Constants
-        private const float alienSize = 150f;
-        private const float alienSpeed = 30f;
-        private const float totalHealth = 25f;
+        private const float sizeAvg = 10f;
+        private const float sizeDev = 3f;
+        private const float speedAvg = 30f;
+        private const float speedDev = 5f;
+        private const float healthAvg = 25f;
+        private const float healthDev = 5f;
         private const int healthBarOffset = 25;
-        private const int deathPoints = 25;
-        private const float alienVolume = 0.01f;
+        private const float volume = 0.01f;
         
         // Attributes
         private Vector3 healthBarPos;
         private HealthBar healthBar;
-        private float health;
-
-        protected override float getSize() {
-            return alienSize;
-        }
-
-        protected override float getSpeed() {
-            return alienSpeed;
-        }
-
+        private float rdmSize, rdmSpeed, totalHealth, health;
+        private int deathPoints;
+        
         protected override void onStart() {
+            float z = Random.Range(-1, 1);
+            rdmSize = sizeAvg + z * sizeDev;
+            rdmSpeed = speedAvg - z * speedDev;
+            totalHealth = (float) Math.Round(healthAvg + z * healthDev);
+            deathPoints = (int) totalHealth;
+            
             Transform tf = transform;
             Vector3 pos = tf.position;
             healthBar = Instantiate(serialBar, new Vector3(pos.x, pos.y - healthBarOffset, pos.z), tf.localRotation).GetComponent<HealthBar>();
             health = totalHealth;
             healthBar.setSize(health / totalHealth);
             healthBar.setColor(Color.green);
+        }
+
+        protected override float getSize() {
+            return rdmSize;
+        }
+
+        protected override float getSpeed() {
+            return rdmSpeed;
         }
 
         protected override void onUpdate() {
@@ -62,7 +73,7 @@ namespace Aliens {
         }
 
         protected override void playDeathNoise() {
-            alienManager.playDeathNoise(alienVolume);
+            alienManager.playDeathNoise(volume);
         }
     }
 }

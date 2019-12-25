@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace PowerUps {
     public abstract class PowerUp : MonoBehaviour {
-        private const float size = 100F;
-        private const float speed = 25F;
+        private const float size = 5f;
+        private const float speed = 25f;
     
         private float xVel, yVel;
         protected PowerUpManager powerUpManager;

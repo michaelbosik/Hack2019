@@ -13,11 +13,11 @@ namespace Scenes {
         public Text txtScore, txtWave, txtLeft, txtHealth;
 
         // Constants
-        private const int alienRate = 3;
-        private const int alienInit = 5;
-        private const int kingRounds = 4;
+        private const int alienRate = 5;
+        private const int alienInit = 10;
+        private const int kingRounds = 3;
         private const float kingRate = 0.75f;
-        private const float powerRate = 0.25f;
+        private const float powerRate = 0.5f;
         private const float powerInit = 0.5f;
         private const float buffer = 250f;
         private const float zBuff = 10f;

@@ -1,28 +1,32 @@
-using Enums;
 using Scenes;
 using UnityEngine;
 
 namespace Aliens {
     public class AlienDrone : Alien {
         // Constants
-        private const float alienSize = 50F;
-        private const float alienSizeDev = 10F;
-        private const float alienSpeed = 45F;
-        private const float alienSpeedDev = 10F;
+        private const float sizeAvg = 4f;
+        private const float sizeDev = 1f;
+        private const float speedAvg = 60f;
+        private const float speedDev = 10f;
+        private const int deathPoints = 1;
+        private const float volume = 0.01f;
         
         // Attributes
-        private const int deathPoints = 1;
-        private const float alienVolume = 0.01f;
+        private float rdmSize, rdmSpeed;
+
+        protected override void onStart() {
+            float z = Random.Range(-1, 1);
+            rdmSize = sizeAvg + z * sizeDev;
+            rdmSpeed = speedAvg - z * speedDev;
+        }
 
         protected override float getSize() {
-            return Random.Range(alienSize - alienSizeDev, alienSize + alienSizeDev);
+            return rdmSize;
         }
 
         protected override float getSpeed() {
-            return Random.Range(alienSpeed - alienSpeedDev, alienSpeed + alienSpeedDev);
+            return rdmSpeed;
         }
-
-        protected override void onStart() { }
 
         protected override void onUpdate() { }
 
@@ -37,7 +41,7 @@ namespace Aliens {
         }
 
         protected override void playDeathNoise() {
-            alienManager.playDeathNoise(alienVolume);
+            alienManager.playDeathNoise(volume);
         }
     }
 }

@@ -10,12 +10,12 @@ namespace Player {
         public GameObject bullet, serialBar, bubble;
 
         // Constants
-        private const float kickBack = 10f;
+        private const float kickBack = 15f;
         private const float hitCoolDown = 0.5f;
         private const float totalHealth = 1f;
         private const float damage = 0.1f;
         private const float shotGunAngle = 5f;
-        private const int healthBarOffset = 18;
+        private const int healthBarOffset = 30;
 
         // Attributes
         private Vector3 healthBarPos;
@@ -85,7 +85,9 @@ namespace Player {
             } else if (health > 0) {
                 healthBar.setColor(Color.red);
             } else {
-                SceneManager.LoadScene(SceneNames.End.GetString());
+                // SceneManager.LoadScene(SceneNames.End.GetString());
+                healthBar.destroy();
+                Destroy(gameObject);
             }
             healthBar.setSize(health);
         }
