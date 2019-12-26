@@ -47,7 +47,8 @@ namespace Player {
 
         private void OnCollisionEnter2D(Collision2D collision) {
             if ((collision.gameObject.name.Equals(SpriteNames.AlienDrone.GetString()) ||
-                 collision.gameObject.name.Equals(SpriteNames.AlienKing.GetString())) && !isPen) {
+                 collision.gameObject.name.Equals(SpriteNames.AlienKing.GetString()) ||
+                 collision.gameObject.name.Equals(SpriteNames.AlienGunner.GetString())) && !isPen) {
                 Destroy(gameObject);
             }
         }
