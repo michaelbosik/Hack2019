@@ -10,7 +10,7 @@ namespace Scenes {
     public class Game : MonoBehaviour {
         // Unity objects
         public GameObject alienDrone, alienKing, alienGunner;
-        public Text txtScore, txtWave, txtLeft, txtHealth;
+        public Text txtScore, txtWave, txtLeft, txtHealth, txtWaveFlash;
 
         // Private constants
         private const int alienRate = 3;
@@ -22,9 +22,12 @@ namespace Scenes {
         private const float powerInit = 0.5f;
         private const float buffer = 250f;
         private const float zBuff = 10f;
+        private const float flashTime = 2f;
 
         // Attributes
         private int wave;
+        private bool isFlash;
+        private float flashTimer;
         public static int score;
         private List<GameObject> lstAliens;
         private static float right, left, top, bottom;
@@ -34,6 +37,7 @@ namespace Scenes {
         void Start() {
             // Initialize variables
             wave = 0;
+            flashTimer = 0;
             score = 0;
             lstAliens = new List<GameObject>();
             Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
@@ -50,6 +54,16 @@ namespace Scenes {
             txtScore.text = "Score: " + score;
             txtLeft.text = "Aliens Left: " + lstAliens.Count;
             txtHealth.text = "Health: " + astronaut.getHealth();
+            if (isFlash) {
+                flashTimer += Time.deltaTime;
+                if (flashTimer > flashTime) {
+                    isFlash = false;
+                    flashTimer = 0;
+                    Color tempColor = txtWaveFlash.color;
+                    tempColor.a = 0;
+                    txtWaveFlash.color = tempColor;
+                }
+            }
 
             // Quit
             if (Input.GetKey(KeyCode.Escape)) {
@@ -102,7 +116,13 @@ namespace Scenes {
                 }
             
                 // Update wave
-                txtWave.text = "Wave: " + ++wave;
+                string strWave = "Wave: " + ++wave;
+                txtWave.text = strWave;
+                txtWaveFlash.text = strWave;
+                Color tempColor = txtWaveFlash.color;
+                tempColor.a = 0.5f;
+                txtWaveFlash.color = tempColor;
+                isFlash = true;
             }
 
             // Remove dead aliens
