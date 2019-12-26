@@ -5,8 +5,8 @@ using UnityEngine;
 namespace Player {
     public class BodyPart : MonoBehaviour {
         // Constants
-        private const float speedAvg = 45f;
-        private const float speedDev = 30f;
+        private const float speedAvg = 20f;
+        private const float speedDev = 20f;
         private const float rotAvg = 50f;
         private const float rotDev = 45f;
         private const float velReduce = 0.5f;
