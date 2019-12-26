@@ -11,7 +11,7 @@ namespace Aliens {
         // Constants
         private const float sizeAvg = 5f;
         private const float sizeDev = 1f;
-        private const float speedAvg = 50f;
+        private const float speedAvg = 40f;
         private const float speedDev = 5f;
         private const float shotDist = 350f;
         private const float shotRate = 1f;
