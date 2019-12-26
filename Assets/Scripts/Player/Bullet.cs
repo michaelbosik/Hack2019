@@ -9,18 +9,19 @@ namespace Player {
         private const float bulletVolume = 0.01f;
 
         // Attributes
-        private float xVel;
-        private float yVel;
+        private float xVel, yVel;
         private Astronaut astronaut;
         private bool isPen;
         private PlayerManager playerManager;
 
         void Start() {
+            Transform tf = transform;
+            
             // Re-sizes the bullet
-            transform.localScale = new Vector3(bulletSize, bulletSize, 0);
+            tf.localScale = new Vector3(bulletSize, bulletSize, 0);
 
             // Calculates the velocities
-            float angle = transform.localEulerAngles.z * Mathf.Deg2Rad;
+            float angle = tf.localEulerAngles.z * Mathf.Deg2Rad;
             xVel = speed * Mathf.Cos(angle);
             yVel = speed * Mathf.Sin(angle);
         
@@ -33,10 +34,11 @@ namespace Player {
 
         void Update() {
             //Movement
-            Vector3 pos = transform.position;
+            Transform tf = transform;
+            Vector3 pos = tf.position;
             pos.x += Time.deltaTime * xVel;
             pos.y += Time.deltaTime * yVel;
-            transform.position = pos;
+            tf.position = pos;
         }
 
         void OnBecameInvisible() {

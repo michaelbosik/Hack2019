@@ -94,15 +94,17 @@ namespace Player {
 
         void OnCollisionEnter2D(Collision2D collision) {
             string colObj = collision.gameObject.name;
-            if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString())) {
+            if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString()) ||
+                colObj.Equals(SpriteNames.AlienGunner.GetString()) || colObj.Equals(SpriteNames.Blast.GetString())) {
                 health -= damage;
                 coolDownTimer = 0;
             }
         }
 
-        private void OnCollisionStay2D(Collision2D collision) {
+        void OnCollisionStay2D(Collision2D collision) {
             string colObj = collision.gameObject.name;
-            if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString())) {
+            if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString()) ||
+                colObj.Equals(SpriteNames.AlienGunner.GetString())) {
                 coolDownTimer += Time.deltaTime;
                 if (coolDownTimer > hitCoolDown) {
                     health -= damage;

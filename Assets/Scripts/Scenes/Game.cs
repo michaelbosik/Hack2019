@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace Scenes {
     public class Game : MonoBehaviour {
         // Unity objects
-        public GameObject alienDrone, alienKing;
+        public GameObject alienDrone, alienKing, alienGunner;
         public Text txtScore, txtWave, txtLeft, txtHealth;
 
         // Constants
@@ -17,6 +17,7 @@ namespace Scenes {
         private const int alienInit = 10;
         private const int kingRounds = 3;
         private const float kingRate = 0.75f;
+        private const int gunnerRounds = 2;
         private const float powerRate = 0.5f;
         private const float powerInit = 0.5f;
         private const float buffer = 250f;
@@ -57,8 +58,8 @@ namespace Scenes {
 
             // Next wave
             if (lstAliens.Count == 0) {
-                // Spawn aliens
-                int numDrone, numKing;
+                // Calculate number of alien types
+                int numDrone, numKing, numGunner;
                 if ((wave + 1) % kingRounds != 0) {
                     numDrone = alienRate * wave + alienInit;
                     numKing = 0;
@@ -66,6 +67,13 @@ namespace Scenes {
                     numDrone = (int) ((alienRate * wave + alienInit) * kingRate);
                     numKing = (wave + 1) / kingRounds;
                 }
+                if ((wave + 1) % gunnerRounds != 0) {
+                    numGunner = 0;
+                } else {
+                    numGunner = (wave + 1) / gunnerRounds;
+                }
+                
+                // Spawn aliens
                 for (int i = 0; i < numDrone; i++) {
                     (float x, float y) = randomSpawn(-1);
                     Vector3 pos = new Vector3(x, y, zBuff);
@@ -75,8 +83,13 @@ namespace Scenes {
                 for (int i = 0; i < numKing; i++) {
                     (float x, float y) = randomSpawn(-1);
                     Vector3 pos = new Vector3(x, y, zBuff);
-                    GameObject newAlien = Instantiate(alienKing, pos, Quaternion.identity);
-                    // lstAliens.Add(newAlien);
+                    Instantiate(alienKing, pos, Quaternion.identity);
+                }
+                for (int i = 0; i < numGunner; i++) {
+                    (float x, float y) = randomSpawn(-1);
+                    Vector3 pos = new Vector3(x, y, zBuff);
+                    GameObject newAlien = Instantiate(alienGunner, pos, Quaternion.identity);
+                    lstAliens.Add(newAlien);
                 }
 
                 // Spawn power-ups

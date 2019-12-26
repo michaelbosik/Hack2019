@@ -28,7 +28,13 @@ namespace Aliens {
             return rdmSpeed;
         }
 
-        protected override void onUpdate() { }
+        protected override void onUpdate() {
+            if (astronaut != null) {
+                trackPlayer();
+            } else {
+                celebrate();
+            }
+        }
 
         protected override void onShot() {
             Game.score += getDeathPoints();

@@ -6,6 +6,9 @@ using Random = UnityEngine.Random;
 
 namespace Aliens {
     public class AlienKing : Alien {
+        // Unity objects
+        public GameObject serialBar;
+        
         // Constants
         private const float sizeAvg = 10f;
         private const float sizeDev = 3f;
@@ -46,6 +49,13 @@ namespace Aliens {
         }
 
         protected override void onUpdate() {
+            if (astronaut != null) {
+                trackPlayer();
+            } else {
+                celebrate();
+            }
+            
+            // Update health bar
             Vector3 pos = transform.position;
             healthBar.transform.position = new Vector3(pos.x, pos.y - healthBarOffset, pos.z);
             float curHealth = health / totalHealth;
