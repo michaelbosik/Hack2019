@@ -1,8 +1,6 @@
-﻿using System;
-using Enums;
+﻿using Enums;
 using Scenes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Player {
     public class Astronaut : MonoBehaviour {
@@ -12,24 +10,27 @@ namespace Player {
         // Constants
         private const float kickBack = 15f;
         private const float hitCoolDown = 0.5f;
-        private const float totalHealth = 1f;
+        private const float totalHealth = 0.1f;
         private const float damage = 0.1f;
         private const float shotGunAngle = 5f;
         private const int healthBarOffset = 30;
 
         // Attributes
+        private PlayerManager playerManager;
         private Vector3 healthBarPos;
         private float mouseAngle, gunAngle, astroAngle; // Degrees
         private float xVel, yVel;
         private float coolDownTimer;
         private float health;
         private HealthBar healthBar;
-        private float right, left, up, down;
+        private float top, right, bottom, left;
         private float shotTimer, shotLimit;
         private bool isShotgun, isLaser, isBounce;
         private Bubble bubbleAstro;
 
         void Start() {
+            playerManager = GameObject.Find(ScriptNames.PlayerManager.GetString()).GetComponent<PlayerManager>();
+            
             // Health
             coolDownTimer = 0;
             healthBarPos = new Vector3(0, 0, 0);
@@ -45,11 +46,7 @@ namespace Player {
             yVel = 0F;
 
             // Screen size
-            Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-            right = screenSize.x;
-            left = 0F;
-            up = screenSize.y;
-            down = 0F;
+            (top, right, bottom, left) = Game.getBounds();
 
             // Bullet
             shotTimer = 0;
@@ -85,7 +82,7 @@ namespace Player {
             } else if (health > 0) {
                 healthBar.setColor(Color.red);
             } else {
-                // SceneManager.LoadScene(SceneNames.End.GetString());
+                playerManager.astronautDeath(xVel, yVel);
                 healthBar.destroy();
                 Destroy(gameObject);
             }
@@ -163,24 +160,23 @@ namespace Player {
             updateAngle();
 
             // Updates position
-            Vector3 pos = transform.position;
+            Transform tf = transform;
+            Vector3 pos = tf.position;
             pos.x += Time.deltaTime * xVel;
             pos.y += Time.deltaTime * yVel;
-            transform.position = pos;
+            tf.position = pos;
 
             // Change health pos
-            healthBarPos = new Vector3(transform.position.x, transform.position.y - healthBarOffset, transform.position.z);
+            healthBarPos = new Vector3(pos.x, pos.y - healthBarOffset, pos.z);
             healthBar.transform.position = healthBarPos;
         }
 
         private void checkBounce() {
-            Vector3 astroPos = transform.position;
-            if ((astroPos.x < left) || (astroPos.x > right)) {
-                if (astroPos.x < left) {
-                    transform.position = new Vector3(left, transform.position.y, transform.position.z);
-                } else {
-                    transform.position = new Vector3(right, transform.position.y, transform.position.z);
-                }
+            Transform tf = transform;
+            Vector3 pos = tf.position;
+            if (pos.x < left || pos.x > right) {
+                float xPos = pos.x < left ? left : right;
+                tf.position = new Vector3(xPos, pos.y, pos.z);
                 if (!isBounce) {
                     health -= damage;
                     xVel *= -0.5F;
@@ -188,12 +184,9 @@ namespace Player {
                     xVel *= -1f;
                 }
             }
-            if ((astroPos.y < down) || (astroPos.y > up)) {
-                if (astroPos.y < down) {
-                    transform.position = new Vector3(transform.position.x, down, transform.position.z);
-                } else {
-                    transform.position = new Vector3(transform.position.x, up, transform.position.z);
-                }
+            if (pos.y < bottom || pos.y > top) {
+                float yPos = pos.y < bottom ? bottom : top;
+                tf.position = new Vector3(pos.x, yPos, pos.z);
                 if (!isBounce) {
                     health -= damage;
                     yVel *= -0.5F;

@@ -143,6 +143,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletShot: {fileID: 8300000, guid: f235ac9b16546974c8d4fa5a728c1e90, type: 3}
+  head: {fileID: 4184654987135490101, guid: 04905eb80e790e640b71e0d01392426f, type: 3}
+  torso: {fileID: 417943458710641418, guid: c77a798e31ba4d248b936694a1851048, type: 3}
+  leftLeg: {fileID: 7402406304866409132, guid: 947c4bfe5f7a53144b7857cf2aa0d93d, type: 3}
+  rightLeg: {fileID: 9183787668606027069, guid: a062ca9d377ea8e48ad155adf9638cf6,
+    type: 3}
+  arm: {fileID: 2937985973133459497, guid: 0ab1814f25e2b8a4fa3f45a3b033577a, type: 3}
+  armBehind: {fileID: 5864571834332335306, guid: 840d06e6141ef3a47b4ab2bdae7a9bc2,
+    type: 3}
 --- !u!4 &94863485
 Transform:
   m_ObjectHideFlags: 0
@@ -341,7 +349,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4ac6eb027609b5844b957c655d24517d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1172,7 +1180,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 326ce0fc3e463c34ba78be241fa720f3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1890,7 +1898,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: b97358b2a1dd30b459881ac9040fe701, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

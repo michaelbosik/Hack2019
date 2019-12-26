@@ -17,6 +17,7 @@ namespace Aliens {
         private const float healthAvg = 25f;
         private const float healthDev = 5f;
         private const int healthBarOffset = 25;
+        private const float rotSpeed = 50f;
         private const float volume = 0.01f;
         
         // Attributes
@@ -26,7 +27,7 @@ namespace Aliens {
         private int deathPoints;
         
         protected override void onStart() {
-            float z = Random.Range(-1, 1);
+            float z = Random.Range(-1f, 1f);
             rdmSize = sizeAvg + z * sizeDev;
             rdmSpeed = speedAvg - z * speedDev;
             totalHealth = (float) Math.Round(healthAvg + z * healthDev);
@@ -46,6 +47,10 @@ namespace Aliens {
 
         protected override float getSpeed() {
             return rdmSpeed;
+        }
+        
+        protected override float getRotSpeed() {
+            return rotSpeed;
         }
 
         protected override void onUpdate() {

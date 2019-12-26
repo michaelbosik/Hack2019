@@ -16,6 +16,7 @@ namespace Aliens {
         private const float shotDist = 350f;
         private const float shotRate = 1f;
         private const float shotSlowDown = 0.5f;
+        private const float rotSpeed = 75f;
         private const int deathPoints = 5;
         private const float volume = 0.01f;
         
@@ -24,7 +25,7 @@ namespace Aliens {
         private Renderer r;
 
         protected override void onStart() {
-            float z = Random.Range(-1, 1);
+            float z = Random.Range(-1f, 1f);
             rdmSize = sizeAvg + z * sizeDev;
             rdmSpeed = speedAvg - z * speedDev;
             shotTimer = 0;
@@ -38,15 +39,20 @@ namespace Aliens {
         protected override float getSpeed() {
             return rdmSpeed;
         }
+        
+        protected override float getRotSpeed() {
+            return rotSpeed;
+        }
 
         protected override void onUpdate() {
+            Transform tf = transform;
             if (astronaut != null) {
                 Vector3 astroPos = astronaut.transform.position;
-                Vector3 alienPos = transform.position;
+                Vector3 alienPos = tf.position;
                 float x = astroPos.x - alienPos.x;
                 float y = astroPos.y - alienPos.y;
                 float angle = Mathf.Atan2(y, x);
-                transform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+                tf.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
                 float dist = (float) Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
                 float xVel = speed * Mathf.Cos(angle);
                 float yVel = speed * Mathf.Sin(angle);
@@ -65,6 +71,12 @@ namespace Aliens {
                 transform.position = alienPos;
             } else {
                 celebrate();
+                if (shotTimer < shotRate) {
+                    shotTimer += Time.deltaTime;
+                } else {
+                    shotTimer = 0;
+                    Instantiate(blast, transform.position, Quaternion.Euler(0, 0, tf.localRotation.z * Mathf.Rad2Deg));
+                }
             }
         }
 

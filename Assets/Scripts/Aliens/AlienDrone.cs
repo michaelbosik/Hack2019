@@ -8,6 +8,7 @@ namespace Aliens {
         private const float sizeDev = 1f;
         private const float speedAvg = 50f;
         private const float speedDev = 10f;
+        private const float rotSpeed = 250f;
         private const int deathPoints = 1;
         private const float volume = 0.01f;
         
@@ -15,7 +16,7 @@ namespace Aliens {
         private float rdmSize, rdmSpeed;
 
         protected override void onStart() {
-            float z = Random.Range(-1, 1);
+            float z = Random.Range(-1f, 1f);
             rdmSize = sizeAvg + z * sizeDev;
             rdmSpeed = speedAvg - z * speedDev;
         }
@@ -26,6 +27,10 @@ namespace Aliens {
 
         protected override float getSpeed() {
             return rdmSpeed;
+        }
+
+        protected override float getRotSpeed() {
+            return rotSpeed;
         }
 
         protected override void onUpdate() {

@@ -12,7 +12,7 @@ namespace Scenes {
         public GameObject alienDrone, alienKing, alienGunner;
         public Text txtScore, txtWave, txtLeft, txtHealth;
 
-        // Constants
+        // Private constants
         private const int alienRate = 3;
         private const int alienInit = 5;
         private const int kingRounds = 4;
@@ -27,7 +27,7 @@ namespace Scenes {
         private int wave;
         public static int score;
         private List<GameObject> lstAliens;
-        private static float right, left, up, down;
+        private static float right, left, top, bottom;
         private Astronaut astronaut;
         private PowerUpManager powerUpManager;
 
@@ -39,8 +39,8 @@ namespace Scenes {
             Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
             right = screenSize.x;
             left = 0;
-            up = screenSize.y;
-            down = 0;
+            top = screenSize.y;
+            bottom = 0;
             astronaut = GameObject.Find(SpriteNames.Astronaut.GetString()).GetComponent<Astronaut>();
             powerUpManager = GameObject.Find(ScriptNames.PowerUpManager.GetString()).GetComponent<PowerUpManager>();
         }
@@ -113,6 +113,15 @@ namespace Scenes {
             }
         }
 
+        public static (float top, float right, float bottom, float left) getBounds() {
+            Vector3 screenSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+            right = screenSize.x;
+            left = 0F;
+            top = screenSize.y;
+            bottom = 0F;
+            return (top, right, bottom, left);
+        }
+
         public static (float, float) randomSpawn(int avoid) {
             List<int> lstEdges = new List<int> { 0, 1, 2, 3 };
             if (avoid != -1) {
@@ -123,30 +132,30 @@ namespace Scenes {
             switch (coin) {
                 case 0: // Up
                     x = Random.Range(left, right);
-                    y = Random.Range(up, up + buffer);
+                    y = Random.Range(top, top + buffer);
                     break;
                 case 1: // Right
                     x = Random.Range(right, right + buffer);
-                    y = Random.Range(down, up);
+                    y = Random.Range(bottom, top);
                     break;
                 case 2: // Down
                     x = Random.Range(left, right);
-                    y = Random.Range(down - buffer, down);
+                    y = Random.Range(bottom - buffer, bottom);
                     break;
                 default: // Left
                     x = Random.Range(left - buffer, left);
-                    y = Random.Range(down, up);
+                    y = Random.Range(bottom, top);
                     break;
             }
             return (x, y);
         }
 
         public static int findEdge(float x, float y) {
-            if (y >= up) {
+            if (y >= top) {
                 return 0; // Up
             } else if (x >= right) {
                 return 1; // Right
-            } else if (y <= down) {
+            } else if (y <= bottom) {
                 return 2; // Down
             } else {
                 return 3; // Left

@@ -3,9 +3,6 @@ using UnityEngine;
 
 namespace Aliens {
     public abstract class Alien : MonoBehaviour {
-        // Constants
-        private const float rotSpeed = 250f;
-        
         // Attributes
         protected AlienManager alienManager;
         protected GameObject astronaut;
@@ -44,7 +41,7 @@ namespace Aliens {
         protected void celebrate() {
             Quaternion rot = transform.localRotation;
             float tDelta = Time.deltaTime;
-            Quaternion dRot = Quaternion.Euler(0, 0, rotSpeed * tDelta);
+            Quaternion dRot = Quaternion.Euler(0, 0, getRotSpeed() * tDelta);
             transform.localRotation = rot * dRot;
         }
         
@@ -56,6 +53,7 @@ namespace Aliens {
 
         protected abstract float getSize();
         protected abstract float getSpeed();
+        protected abstract float getRotSpeed();
         protected abstract void onStart();
         protected abstract void onUpdate();
         protected abstract void onShot();

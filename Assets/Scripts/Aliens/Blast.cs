@@ -5,7 +5,7 @@ namespace Aliens {
     public class Blast : MonoBehaviour {
         // Constants
         private const float speed = 100f;
-        private const float bulletSize = 5f;
+        private const float bulletSize = 2.5f;
         
         // Attributes
         private float xVel, yVel;
