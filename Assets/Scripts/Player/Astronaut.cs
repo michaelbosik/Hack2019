@@ -10,7 +10,7 @@ namespace Player {
         // Constants
         private const float kickBack = 15f;
         private const float hitCoolDown = 0.5f;
-        private const float totalHealth = 0.1f;
+        private const float totalHealth = 1f;
         private const float damage = 0.1f;
         private const float shotGunAngle = 5f;
         private const int healthBarOffset = 30;
