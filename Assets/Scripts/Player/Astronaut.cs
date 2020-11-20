@@ -57,36 +57,38 @@ namespace Player {
         }
 
         void Update() {
-            // Left-click
-            if (Input.GetMouseButtonDown(0)) {
-                shotTimer = 0;
-                shootBullet(isShotgun);
-            }
-            if (Input.GetMouseButton(0)) {
-                if (shotTimer < shotLimit) {
-                    shotTimer += Time.deltaTime;
-                } else {
+            if (!Game.isPaused) {
+                // Left-click
+                if (Input.GetMouseButtonDown(0)) {
                     shotTimer = 0;
                     shootBullet(isShotgun);
                 }
-            }
+                if (Input.GetMouseButton(0)) {
+                    if (shotTimer < shotLimit) {
+                        shotTimer += Time.deltaTime;
+                    } else {
+                        shotTimer = 0;
+                        shootBullet(isShotgun);
+                    }
+                }
 
-            // Player movement
-            movePlayer();
+                // Player movement
+                movePlayer();
 
-            // Health bar
-            if (health > (0.75) * totalHealth) {
-                healthBar.setColor(Color.green);
-            } else if (health > (0.5) * totalHealth) {
-                healthBar.setColor(Color.yellow);
-            } else if (health > 0) {
-                healthBar.setColor(Color.red);
-            } else {
-                playerManager.astronautDeath(xVel, yVel);
-                healthBar.destroy();
-                Destroy(gameObject);
+                // Health bar
+                if (health > (0.75) * totalHealth) {
+                    healthBar.setColor(Color.green);
+                } else if (health > (0.5) * totalHealth) {
+                    healthBar.setColor(Color.yellow);
+                } else if (health > 0) {
+                    healthBar.setColor(Color.red);
+                } else {
+                    playerManager.astronautDeath(xVel, yVel);
+                    healthBar.destroy();
+                    Destroy(gameObject);
+                }
+                healthBar.setSize(health);
             }
-            healthBar.setSize(health);
         }
 
         void OnCollisionEnter2D(Collision2D collision) {
@@ -99,15 +101,21 @@ namespace Player {
         }
 
         void OnCollisionStay2D(Collision2D collision) {
-            string colObj = collision.gameObject.name;
-            if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString()) ||
-                colObj.Equals(SpriteNames.AlienGunner.GetString())) {
-                coolDownTimer += Time.deltaTime;
-                if (coolDownTimer > hitCoolDown) {
-                    health -= damage;
-                    coolDownTimer = 0;
+            if (!Game.isPaused) {
+                string colObj = collision.gameObject.name;
+                if (colObj.Equals(SpriteNames.AlienDrone.GetString()) || colObj.Equals(SpriteNames.AlienKing.GetString()) ||
+                    colObj.Equals(SpriteNames.AlienGunner.GetString())) {
+                    coolDownTimer += Time.deltaTime;
+                    if (coolDownTimer > hitCoolDown) {
+                        health -= damage;
+                        coolDownTimer = 0;
+                    }
                 }
             }
+        }
+        
+        public (float, float) getVelocities() {
+            return (xVel, yVel);
         }
 
         public int getHealth() {

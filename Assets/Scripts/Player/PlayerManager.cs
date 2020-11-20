@@ -1,4 +1,5 @@
 ﻿using Enums;
+using Scenes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,7 +35,7 @@ namespace Player {
             if (isDead) {
                 deathTimer += Time.deltaTime;
                 if (deathTimer > deathLimit) {
-                    SceneManager.LoadScene(SceneNames.End.GetString());
+                    Game.endGame();
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Enums;
+using Scenes;
 using UnityEngine;
 
 namespace Aliens {
@@ -20,11 +21,13 @@ namespace Aliens {
         }
 
         void Update() {
-            Transform tf = transform;
-            Vector3 pos = tf.position;
-            pos.x += Time.deltaTime * xVel;
-            pos.y += Time.deltaTime * yVel;
-            tf.position = pos;
+            if (!Game.isPaused) {
+                Transform tf = transform;
+                Vector3 pos = tf.position;
+                pos.x += Time.deltaTime * xVel;
+                pos.y += Time.deltaTime * yVel;
+                tf.position = pos;
+            }
         }
 
         void OnCollisionEnter2D(Collision2D collision) {

@@ -31,17 +31,19 @@ namespace Player {
         }
 
         void Update() {
-            float tDelta = Time.deltaTime;
-            Transform tf = transform;
+            if (!Game.isPaused) {
+                float tDelta = Time.deltaTime;
+                Transform tf = transform;
             
-            checkBounce();
-            Vector3 pos = tf.position;
-            pos.x += xVel * tDelta;
-            pos.y += yVel * tDelta;
-            tf.position = pos;
+                checkBounce();
+                Vector3 pos = tf.position;
+                pos.x += xVel * tDelta;
+                pos.y += yVel * tDelta;
+                tf.position = pos;
 
-            Quaternion dRot = Quaternion.Euler(0, 0, rotSpeed * tDelta);
-            tf.localRotation *= dRot;
+                Quaternion dRot = Quaternion.Euler(0, 0, rotSpeed * tDelta);
+                tf.localRotation *= dRot;
+            }
         }
         
         private void checkBounce() {

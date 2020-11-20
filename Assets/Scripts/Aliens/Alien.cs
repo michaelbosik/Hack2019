@@ -1,8 +1,12 @@
 ﻿using Enums;
+using Scenes;
 using UnityEngine;
 
 namespace Aliens {
     public abstract class Alien : MonoBehaviour {
+        // Constants
+        private const float zBuff = 10f;
+        
         // Attributes
         protected AlienManager alienManager;
         protected GameObject astronaut;
@@ -14,13 +18,17 @@ namespace Aliens {
             alienManager = GameObject.Find(ScriptNames.AlienManager.GetString()).GetComponent<AlienManager>();
             astronaut = GameObject.Find(SpriteNames.Astronaut.GetString());
 
+            (float x, float y) = AlienManager.randomSpawn();
+            transform.position = new Vector3(x, y, zBuff);
             float size = getSize();
             transform.localScale = new Vector3(size, size, 0);
             speed = getSpeed();
         }
 
         private void Update() {
-            onUpdate();
+            if (!Game.isPaused) {
+                onUpdate();
+            }
         }
 
         protected void trackPlayer() {

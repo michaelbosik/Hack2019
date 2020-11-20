@@ -14,9 +14,9 @@ TagManager:
   - UI
   - 
   - 
-  - Main
-  - 
-  - 
+  - Background
+  - Foreground
+  - Entities
   - 
   - 
   - 
@@ -42,6 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Gloup
+  - name: Objects
     uniqueID: 222169671
+    locked: 0
+  - name: Pause
+    uniqueID: 501913063
+    locked: 0
+  - name: UI
+    uniqueID: 2677161009
     locked: 0

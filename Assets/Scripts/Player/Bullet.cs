@@ -1,4 +1,5 @@
 ﻿using Enums;
+using Scenes;
 using UnityEngine;
 
 namespace Player {
@@ -16,29 +17,31 @@ namespace Player {
 
         void Start() {
             Transform tf = transform;
+            astronaut = GameObject.Find(SpriteNames.Astronaut.GetString()).GetComponent<Astronaut>();
+            playerManager = GameObject.Find(ScriptNames.PlayerManager.GetString()).GetComponent<PlayerManager>();
             
             // Re-sizes the bullet
             tf.localScale = new Vector3(bulletSize, bulletSize, 0);
 
             // Calculates the velocities
             float angle = tf.localEulerAngles.z * Mathf.Deg2Rad;
-            xVel = speed * Mathf.Cos(angle);
-            yVel = speed * Mathf.Sin(angle);
-        
-            astronaut = GameObject.Find(SpriteNames.Astronaut.GetString()).GetComponent<Astronaut>();
-            isPen = astronaut.getLaser();
+            (float xAstroVel, float yAstroVel) = astronaut.getVelocities();
+            xVel = speed * Mathf.Cos(angle) + xAstroVel;
+            yVel = speed * Mathf.Sin(angle) + yAstroVel;
             
-            playerManager = GameObject.Find(ScriptNames.PlayerManager.GetString()).GetComponent<PlayerManager>();
+            isPen = astronaut.getLaser();
             playerManager.playBulletShot(bulletVolume);
         }
 
         void Update() {
-            //Movement
-            Transform tf = transform;
-            Vector3 pos = tf.position;
-            pos.x += Time.deltaTime * xVel;
-            pos.y += Time.deltaTime * yVel;
-            tf.position = pos;
+            if (!Game.isPaused) {
+                // Movement
+                Transform tf = transform;
+                Vector3 pos = tf.position;
+                pos.x += Time.deltaTime * xVel;
+                pos.y += Time.deltaTime * yVel;
+                tf.position = pos;
+            }
         }
 
         void OnBecameInvisible() {

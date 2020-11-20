@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6245238820796371942}
   - component: {fileID: 4824440320886004201}
   - component: {fileID: 621188842960972363}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: AlienDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,8 +69,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 222169671
+  m_SortingLayer: 1
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 15cb36c2ce22ecf4eb4081486ee4ef59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
